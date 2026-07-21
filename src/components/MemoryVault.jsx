@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MemoryCard } from './MemoryCard';
+import { StellarConstellation } from './StellarConstellation';
 import { AnimatePresence } from 'framer-motion';
+import { Sparkles, Grid, Compass } from 'lucide-react';
 
 export const MemoryVault = ({
   memories = [],
@@ -10,6 +12,8 @@ export const MemoryVault = ({
   onDeleteMemory,
   onOpenCreator,
 }) => {
+  const [vaultViewMode, setVaultViewMode] = useState('constellation'); // 'constellation' or 'grid'
+
   // Filter memories by phase
   const filteredMemories = memories.filter((mem) => {
     if (activePhaseId !== 'all' && mem.phaseId !== activePhaseId) return false;
@@ -20,44 +24,82 @@ export const MemoryVault = ({
 
   return (
     <div className="w-full max-w-5xl mx-auto my-10 space-y-6">
-      {/* Header bar */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+      {/* Header bar with View Switcher */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
         <h3 className="font-serif font-bold text-xl text-slate-900">
           Erinnerungen {activePhaseId !== 'all' ? `— ${activePhase?.name}` : ''}
           <span className="ml-2 text-xs font-sans font-normal text-slate-400">
             ({filteredMemories.length} Einträge)
           </span>
         </h3>
-      </div>
 
-      {/* Spacious 2-Column Editorial Grid */}
-      {filteredMemories.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <AnimatePresence>
-            {filteredMemories.map((mem) => {
-              const phase = phases.find((p) => p.id === mem.phaseId);
-              return (
-                <MemoryCard
-                  key={mem.id}
-                  memory={mem}
-                  phase={phase}
-                  simulatedDate={simulatedDate}
-                  onDeleteMemory={onDeleteMemory}
-                />
-              );
-            })}
-          </AnimatePresence>
-        </div>
-      ) : (
-        <div className="text-center py-12 space-y-3">
-          <p className="text-xs text-slate-400">Keine Erinnerungen in dieser Lebensphase.</p>
+        {/* View Mode Switcher: Constellation vs Grid */}
+        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
           <button
-            onClick={onOpenCreator}
-            className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all shadow-md"
+            onClick={() => setVaultViewMode('constellation')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              vaultViewMode === 'constellation'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
           >
-            Erinnerung hinzufügen
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>Der Lebenshimmel</span>
+          </button>
+
+          <button
+            onClick={() => setVaultViewMode('grid')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
+              vaultViewMode === 'grid'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Grid className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Tresor-Raster</span>
           </button>
         </div>
+      </div>
+
+      {/* VIEW MODE 1: STELLAR CONSTELLATION (LEBENSHIMMEL) */}
+      {vaultViewMode === 'constellation' && (
+        <StellarConstellation
+          memories={filteredMemories}
+          phases={phases}
+          simulatedDate={simulatedDate}
+        />
+      )}
+
+      {/* VIEW MODE 2: SPACIOUS 2-COLUMN EDITORIAL GRID */}
+      {vaultViewMode === 'grid' && (
+        filteredMemories.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <AnimatePresence>
+              {filteredMemories.map((mem) => {
+                const phase = phases.find((p) => p.id === mem.phaseId);
+                return (
+                  <MemoryCard
+                    key={mem.id}
+                    memory={mem}
+                    phase={phase}
+                    simulatedDate={simulatedDate}
+                    onDeleteMemory={onDeleteMemory}
+                  />
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div className="text-center py-12 space-y-3">
+            <p className="text-xs text-slate-400">Keine Erinnerungen in dieser Lebensphase.</p>
+            <button
+              onClick={onOpenCreator}
+              className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all shadow-md"
+            >
+              Erinnerung hinzufügen
+            </button>
+          </div>
+        )
       )}
     </div>
   );
