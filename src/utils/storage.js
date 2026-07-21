@@ -1,6 +1,6 @@
-import { DEFAULT_PHASES, MOCK_MEMORIES } from '../data/mockData';
+import { DEFAULT_PHASES, MOCK_MEMORIES, DEFAULT_WERTE, DEFAULT_LETZTES_KAPITEL } from '../data/mockData';
 
-const STORAGE_KEY = 'kaleido_app_state_v14';
+const STORAGE_KEY = 'kaleido_app_state_v15';
 
 export const getInitialState = () => {
   if (typeof window === 'undefined') {
@@ -9,6 +9,8 @@ export const getInitialState = () => {
       activePhaseId: 'all',
       phases: DEFAULT_PHASES,
       memories: MOCK_MEMORIES,
+      werte: DEFAULT_WERTE,
+      letztesKapitel: DEFAULT_LETZTES_KAPITEL,
     };
   }
 
@@ -21,6 +23,8 @@ export const getInitialState = () => {
         activePhaseId: parsed.activePhaseId || 'all',
         phases: parsed.phases?.length ? parsed.phases : DEFAULT_PHASES,
         memories: parsed.memories?.length ? parsed.memories : MOCK_MEMORIES,
+        werte: parsed.werte?.length ? parsed.werte : DEFAULT_WERTE,
+        letztesKapitel: parsed.letztesKapitel || DEFAULT_LETZTES_KAPITEL,
       };
     }
   } catch (err) {
@@ -32,6 +36,8 @@ export const getInitialState = () => {
     activePhaseId: 'all',
     phases: DEFAULT_PHASES,
     memories: MOCK_MEMORIES,
+    werte: DEFAULT_WERTE,
+    letztesKapitel: DEFAULT_LETZTES_KAPITEL,
   };
 };
 
@@ -50,6 +56,8 @@ export const resetToDefaultData = () => {
     activePhaseId: 'all',
     phases: DEFAULT_PHASES,
     memories: MOCK_MEMORIES,
+    werte: DEFAULT_WERTE,
+    letztesKapitel: DEFAULT_LETZTES_KAPITEL,
   };
   saveState(defaultState);
   return defaultState;

@@ -1,3 +1,51 @@
+export const DEFAULT_WERTE = [
+  {
+    id: 'werte-1',
+    category: 'Lebenshaltung',
+    question: 'Welcher Grundsatz hat mich in schweren Zeiten getragen?',
+    answer: 'Ehrlichkeit gegen sich selbst und Nachsicht gegenüber anderen. Die Welt verändert sich ständig, aber Mut und Mitgefühl bleiben unvergänglich.',
+    createdAt: '2026-06-10',
+  },
+  {
+    id: 'werte-2',
+    category: 'Ratschlag an Nachkommen',
+    question: 'Welchen Ratschlag gebe ich der nächsten Generation?',
+    answer: 'Sammelt Erinnerungen, nicht Besitztümer. Verbringt Zeit miteinander im Freien, sprecht offen über Ängste und vergebt schnell.',
+    createdAt: '2026-07-01',
+  },
+  {
+    id: 'werte-3',
+    category: 'Dankbarkeit',
+    question: 'Wofür bin ich im Rückblick am tiefsten dankbar?',
+    answer: 'Für die ruhigen Sonntagmorgen mit der Familie, das Lachen am Esstisch und die treuen Weggefährten an meiner Seite.',
+    createdAt: '2026-07-15',
+  },
+];
+
+export const DEFAULT_LETZTES_KAPITEL = {
+  music: [
+    { title: 'Clair de Lune', artist: 'Claude Debussy', note: 'Zum Einlass der Abschiedsfeier' },
+    { title: 'Der Weg', artist: 'Herbert Grönemeyer', note: 'Lieblingslied für leise Momente' },
+    { title: 'What a Wonderful World', artist: 'Louis Armstrong', note: 'Zum Ausklang des Lebensabschieds' },
+  ],
+  atmosphere: {
+    flowers: 'Wiesenblumen, Lavendel & helle Feldblumen (keine steifen Kränze)',
+    colors: 'Helle, warme Naturtöne (Beige, Salbei, sanftes Gold)',
+    dresscode: 'Helle Lebenskleidung statt traurigem Schwarz',
+    notes: 'Es soll ein Ort der Dankbarkeit für das gemeinsame Leben sein, nicht der Dunkelheit.',
+  },
+  words: {
+    poem: '„Ich bin nicht tot, ich tausche nur die Räume. Ich leb in euch und geh durch eure Träume.“',
+    speakerNotes: 'Bitte sprecht nicht nur über Erfolge, sondern erzählt kleine, lustige Anekdoten aus dem Alltag.',
+  },
+  abschiedshaus: {
+    name: 'Abschiedshaus Lichtblick (Dr. Marcus Weber)',
+    location: 'Freiburg / Schwarzwald',
+    contact: 'kontakt@abschiedshaus-lichtblick.de',
+    notes: 'Abschiedsbegleiter Dr. Weber kennt meine Wünsche und führt die Treuhand-Zeitkapseln.',
+  },
+};
+
 export const DEFAULT_PHASES = [
   {
     id: 'phase-1',
