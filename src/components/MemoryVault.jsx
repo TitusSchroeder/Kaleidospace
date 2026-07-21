@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MemoryCard } from './MemoryCard';
-import { StellarConstellation } from './StellarConstellation';
+import { PhaseSchatullen } from './PhaseSchatullen';
 import { AnimatePresence } from 'framer-motion';
-import { Sparkles, Grid, Compass } from 'lucide-react';
+import { Box, Grid } from 'lucide-react';
 
 export const MemoryVault = ({
   memories = [],
@@ -12,7 +12,7 @@ export const MemoryVault = ({
   onDeleteMemory,
   onOpenCreator,
 }) => {
-  const [vaultViewMode, setVaultViewMode] = useState('constellation'); // 'constellation' or 'grid'
+  const [vaultViewMode, setVaultViewMode] = useState('schatullen'); // 'schatullen' or 'grid'
 
   // Filter memories by phase
   const filteredMemories = memories.filter((mem) => {
@@ -27,24 +27,24 @@ export const MemoryVault = ({
       {/* Header bar with View Switcher */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200 pb-3 gap-3">
         <h3 className="font-serif font-bold text-xl text-slate-900">
-          Erinnerungen {activePhaseId !== 'all' ? `— ${activePhase?.name}` : ''}
+          Erinnerungs-Archiv {activePhaseId !== 'all' ? `— ${activePhase?.name}` : ''}
           <span className="ml-2 text-xs font-sans font-normal text-slate-400">
             ({filteredMemories.length} Einträge)
           </span>
         </h3>
 
-        {/* View Mode Switcher: Constellation vs Grid */}
+        {/* View Mode Switcher: Schatullen vs Grid */}
         <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
           <button
-            onClick={() => setVaultViewMode('constellation')}
+            onClick={() => setVaultViewMode('schatullen')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
-              vaultViewMode === 'constellation'
+              vaultViewMode === 'schatullen'
                 ? 'bg-slate-900 text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Der Lebenshimmel</span>
+            <Box className="w-3.5 h-3.5 text-amber-300" />
+            <span>5 Schatullen</span>
           </button>
 
           <button
@@ -56,17 +56,19 @@ export const MemoryVault = ({
             }`}
           >
             <Grid className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Tresor-Raster</span>
+            <span>Gesamt-Raster</span>
           </button>
         </div>
       </div>
 
-      {/* VIEW MODE 1: STELLAR CONSTELLATION (LEBENSHIMMEL) */}
-      {vaultViewMode === 'constellation' && (
-        <StellarConstellation
-          memories={filteredMemories}
+      {/* VIEW MODE 1: 5 SCHATULLEN DER LEBENSPHASEN */}
+      {vaultViewMode === 'schatullen' && (
+        <PhaseSchatullen
           phases={phases}
+          memories={filteredMemories}
           simulatedDate={simulatedDate}
+          onDeleteMemory={onDeleteMemory}
+          onOpenCreator={onOpenCreator}
         />
       )}
 
