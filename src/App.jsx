@@ -83,8 +83,10 @@ export function App() {
       {/* Intake Modal for Memory Creation */}
       {isCreatorOpen && (
         <IntentionalCreator
+          isOpen={isCreatorOpen}
           phases={state.phases}
           onSave={handleSaveMemory}
+          onSaveMemory={handleSaveMemory}
           onClose={() => setIsCreatorOpen(false)}
         />
       )}

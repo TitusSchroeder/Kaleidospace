@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, Lock, Unlock, Calendar, Users, ShieldCheck, Image, Shuffle, Send, HeartHandshake } from 'lucide-react';
 import { UNSPASH_PRESETS } from '../data/mockData';
 
-export const IntentionalCreator = ({ isOpen, onClose, onSaveMemory, phases = [] }) => {
+export const IntentionalCreator = ({ isOpen = true, onClose, onSave, onSaveMemory, phases = [] }) => {
   const [title, setTitle] = useState('');
   const [story, setStory] = useState('');
   const [phaseId, setPhaseId] = useState(phases[0]?.id || 'phase-1');
@@ -13,7 +13,7 @@ export const IntentionalCreator = ({ isOpen, onClose, onSaveMemory, phases = [] 
   const [recipientsText, setRecipientsText] = useState('familie@kaleido.org');
   const [treuhandBote, setTreuhandBote] = useState('Abschiedsbegleiter Dr. Marcus Weber (Abschiedshaus Lichtblick)');
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   const handleRandomizeImage = () => {
     const randomIndex = Math.floor(Math.random() * UNSPASH_PRESETS.length);
@@ -29,7 +29,7 @@ export const IntentionalCreator = ({ isOpen, onClose, onSaveMemory, phases = [] 
       .map((s) => s.trim())
       .filter(Boolean);
 
-    onSaveMemory({
+    const memoryData = {
       title: title.trim(),
       story: story.trim(),
       phaseId,
@@ -40,7 +40,13 @@ export const IntentionalCreator = ({ isOpen, onClose, onSaveMemory, phases = [] 
       audienceScope,
       recipients,
       treuhandBote: isTimeLocked ? treuhandBote : null,
-    });
+    };
+
+    if (onSave) {
+      onSave(memoryData);
+    } else if (onSaveMemory) {
+      onSaveMemory(memoryData);
+    }
 
     // Reset Form
     setTitle('');
