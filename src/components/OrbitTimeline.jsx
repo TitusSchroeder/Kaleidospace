@@ -44,31 +44,32 @@ export const OrbitTimeline = ({
   const largeArcFlag = todayRatio > 0.5 ? 1 : 0;
   const coloredArcPath = `M ${startX} ${startY} A ${rx} ${ry} 0 ${largeArcFlag} 1 ${todayX} ${todayY}`;
 
-  // Map memories deterministically along the orbit
-  const orbitNodes = memories.map((mem, idx) => {
-    const total = memories.length || 1;
-    // Map ratio around the year
-    const nodeRatio = (idx / total) * 0.95; // Map around the year
-    const angle = startAngle + nodeRatio * 2 * Math.PI;
+  // Map memories and ONLY INCLUDE NODES UP TO TODAY (Do not show future nodes!)
+  const orbitNodes = memories
+    .map((mem, idx) => {
+      const total = memories.length || 1;
+      const nodeRatio = (idx / total) * 0.95;
+      const angle = startAngle + nodeRatio * 2 * Math.PI;
 
-    const x = cx + rx * Math.cos(angle);
-    const y = cy + ry * Math.sin(angle);
+      const x = cx + rx * Math.cos(angle);
+      const y = cy + ry * Math.sin(angle);
 
-    const phase = phases.find((p) => p.id === mem.phaseId) || { color: '#10b981', name: 'Lebensphase' };
-    const isLocked = mem.isTimeLocked && (!mem.unlockDate || simulatedDate < mem.unlockDate);
-    const isPast = nodeRatio <= todayRatio;
+      const phase = phases.find((p) => p.id === mem.phaseId) || { color: '#10b981', name: 'Lebensphase' };
+      const isLocked = mem.isTimeLocked && (!mem.unlockDate || simulatedDate < mem.unlockDate);
+      const isPastOrToday = nodeRatio <= todayRatio;
 
-    return {
-      ...mem,
-      x,
-      y,
-      angle,
-      color: isLocked ? '#f59e0b' : phase.color,
-      phaseName: phase.name,
-      isLocked,
-      isPast,
-    };
-  });
+      return {
+        ...mem,
+        x,
+        y,
+        angle,
+        color: isLocked ? '#f59e0b' : phase.color,
+        phaseName: phase.name,
+        isLocked,
+        isPastOrToday,
+      };
+    })
+    .filter((node) => node.isPastOrToday); // ONLY KEEP NODES UP TO TODAY!
 
   return (
     <div className={`relative w-full rounded-3xl p-6 lg:p-8 transition-colors duration-300 border shadow-xl select-none overflow-hidden ${
@@ -108,7 +109,7 @@ export const OrbitTimeline = ({
 
       {/* SUBTITLE */}
       <p className="text-xs text-slate-500 dark:text-slate-400 font-serif max-w-lg mx-auto text-center mt-3">
-        Der Orbit startet oben bei 12 Uhr (1. Jan) und füllt sich im Uhrzeigersinn bis <strong className="text-emerald-600">Heute</strong>. Hovern Sie über Knotenpunkte, um Details zu sehen.
+        Der Orbit füllt sich von oben im Uhrzeigersinn bis <strong className="text-emerald-600">Heute</strong>. Die unbeschriebene Zukunft ist gestrichelt.
       </p>
 
       {/* SVG ORBIT STAGE */}
@@ -131,7 +132,7 @@ export const OrbitTimeline = ({
             </filter>
           </defs>
 
-          {/* 1. Full Gray Ellipse (Future/Unwritten Track) */}
+          {/* 1. Full Dashed Ellipse (Future / Unwritten Track ONLY) */}
           <ellipse
             cx={cx}
             cy={cy}
@@ -156,30 +157,7 @@ export const OrbitTimeline = ({
             />
           )}
 
-          {/* 3. 12 O'CLOCK TOP START TICK (1. JANUAR) */}
-          <g transform={`translate(${startX}, ${startY})`}>
-            <line
-              x1="0"
-              y1="-10"
-              x2="0"
-              y2="10"
-              stroke={darkMode ? '#ffffff' : '#0f172a'}
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-            <text
-              y="-16"
-              textAnchor="middle"
-              fill={darkMode ? '#94a3b8' : '#64748b'}
-              fontSize="10"
-              fontFamily="sans-serif"
-              fontWeight="bold"
-            >
-              12 UHR (1. JAN)
-            </text>
-          </g>
-
-          {/* 4. TODAY MARKER NODE (Tip of Arc) */}
+          {/* 3. TODAY MARKER NODE (Tip of Arc) */}
           <g transform={`translate(${todayX}, ${todayY})`}>
             <circle
               r="18"
@@ -207,7 +185,7 @@ export const OrbitTimeline = ({
             </text>
           </g>
 
-          {/* 5. MEMORY NODE DOTS (TEXT VISIBLE ONLY ON HOVER!) */}
+          {/* 4. PAST/PRESENT MEMORY NODE DOTS ONLY (Future nodes are hidden!) */}
           {orbitNodes.map((node) => {
             const isHovered = hoveredNode?.id === node.id;
 
@@ -299,7 +277,7 @@ export const OrbitTimeline = ({
               Lebenszeit im Jahr {currentYear}
             </h3>
             <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950 dark:text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
-              {memories.length} Knotenpunkte
+              {orbitNodes.length} Knotenpunkte
             </span>
           </div>
         </div>
