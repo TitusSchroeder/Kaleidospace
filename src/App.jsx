@@ -7,7 +7,6 @@ import { LifeCompassSpace } from './components/LifeCompassSpace';
 import { LifeStagePlanningSpace } from './components/LifeStagePlanningSpace';
 import { MeinKreis } from './components/MeinKreis';
 import { SecurityVault } from './components/SecurityVault';
-import { LebensbegleiterWidget } from './components/LebensbegleiterWidget';
 import { Marktplatz } from './components/Marktplatz';
 import { MemoryVault } from './components/MemoryVault';
 import { TimeSimulationBar } from './components/TimeSimulationBar';
@@ -192,13 +191,6 @@ export function App() {
 
         </main>
       </div>
-
-      {/* LEVEL 5: LEBENSBEGLEITER FLOATING AI ASSISTANT WIDGET */}
-      <LebensbegleiterWidget
-        darkMode={darkMode}
-        onOpenCreator={() => setIsCreatorOpen(true)}
-        onNavigateTab={setActiveView}
-      />
 
       {/* Intake Modal for Memory Creation */}
       {isCreatorOpen && (
