@@ -1,70 +1,78 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2 } from 'lucide-react';
 import { WerteKompass } from '../WerteKompass';
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
 
-export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKapitel, onUpdateLetztesKapitel }) => {
+export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKapitel, onUpdateLetztesKapitel, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
 
   // Interactive Sub-Module State Data
   const [profile, setProfile] = useState({
     name: 'Titus Schröder',
     contact: 'titus@schroeder-familie.de',
-    health: 'Blutgruppe A+, Keine Allergien',
+    health: 'Blutgruppe A+, Keine chronischen Vorerkrankungen',
     emergency: 'Clara Schröder (Tochter, +49 170 1234567)',
   });
 
   const [passwords, setPasswords] = useState([
-    { id: 'p1', service: 'Master Tresor PIN', hint: 'Geschützt durch 2FA' },
+    { id: 'p1', service: 'Master Tresor PIN', hint: 'Geschützt in 1Password' },
     { id: 'p2', service: 'Digitale Zeitkapsel-Schlüssel', hint: 'Abschiedsbegleiter Dr. Weber' },
   ]);
 
   const [interests, setInterests] = useState([
     'Philosophie der Stoa & Entschleunigung',
-    'Geschichte der Architektur',
-    'Klassische Musik & Oper',
+    'Geschichte der modernen Architektur',
+    'Klassische Musik & Konzertabende',
   ]);
 
   const [hobbies, setHobbies] = useState([
-    'Wandern im Schwarzwald',
-    'Holzschnitzen & Handwerk',
-    'Gärtnern & Apfelanbau',
+    'Wandern im Schwarzwald & Bergtouren',
+    'Holzschnitzen & Handwerkskunst',
+    'Gärtnern & Anbau eigener Apfelsorten',
   ]);
 
   const [bucketList, setBucketList] = useState([
-    { id: 'b1', text: 'Alpenüberquerung zu Fuß', category: 'Ich', done: true },
-    { id: 'b2', text: 'Gemeinsames Familienbuch veröffentlichen', category: 'Familie', done: false },
-    { id: 'b3', text: 'Stiftung für Naturschutz gründen', category: 'Beruf', done: false },
+    { id: 'b1', text: 'Alpenüberquerung zu Fuß von Oberstdorf nach Meran', category: 'Ich', done: true },
+    { id: 'b2', text: 'Gemeinsames Familien-Erinnerungsbuch veröffentlichen', category: 'Familie', done: false },
+    { id: 'b3', text: 'Stiftung für regionalen Naturschutz gründen', category: 'Beruf', done: false },
   ]);
 
   const [myWay, setMyWay] = useState({
-    strengths: 'Besonnenheit, Ausdauer & Zuhören',
-    vision: 'Ein Leben in Dankbarkeit und bleibenden Werten',
-    notMyWay: 'Rastloser Konsum und oberflächlicher Lärm',
+    strengths: 'Besonnenheit, Ausdauer & tiefes Zuhören',
+    vision: 'Ein Leben in Dankbarkeit, innerer Ruhe und bleibenden Werten',
+    notMyWay: 'Rastloser Konsum, oberflächlicher Lärm und Fremdbestimmung',
   });
 
   const [reflections, setReflections] = useState([
-    { id: 'r1', date: '2026-07-28', text: 'Heute verstanden: Stille ist nicht die Abwesenheit von Geräuschen, sondern die Anwesenheit von Frieden.' },
+    { id: 'r1', date: '2026-07-28', text: 'Heute verstanden: Stille ist nicht die Abwechslung von Geräuschen, sondern die Anwesenheit von innerem Frieden.' },
   ]);
 
   return (
-    <div className="w-full space-y-4 select-none pb-20">
+    <div className="w-full space-y-4 select-none pb-12">
       
-      {/* SPACE HEADER */}
+      {/* SPACE HEADER WITH HOME BACK BUTTON */}
       <div className="p-4 bg-emerald-600 text-white rounded-3xl border-2 border-emerald-700 shadow-md">
+        <button
+          onClick={onGoHome}
+          className="flex items-center gap-1 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1 rounded-xl mb-3 transition-all"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Zurück zur Startseite</span>
+        </button>
+
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-white text-emerald-600 rounded-2xl shadow-xs">
             <Compass className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-700 px-2.5 py-0.5 rounded-full">
-              Space 2
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-700 px-2 py-0.5 rounded-full">
+              Personal Space
             </span>
             <h2 className="text-xl font-serif font-bold">Personal Space</h2>
             <p className="text-xs text-emerald-100 font-serif">
-              Einordnen / Rahmen / Verstehen • Living life mindfully
+              Das Leben bewusst leben • Living life mindfully
             </p>
           </div>
         </div>
@@ -72,7 +80,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
 
       {/* OVERVIEW SUB-MODULE CARDS */}
       {subView === 'overview' && (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           
           {/* MODULE 1: MEIN PROFIL */}
           <div
@@ -85,24 +93,24 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Mein Profil</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Kontaktdaten, Gesundheit & Notfall</p>
+                <p className="text-[11px] text-slate-500 font-serif">Kontaktdaten, Gesundheit & Notfallkontakte</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
           </div>
 
-          {/* MODULE 2: PASSWÖRTER */}
+          {/* MODULE 2: PASSWÖRTER (WITH 1PASSWORD AFFILIATE) */}
           <div
             onClick={() => setSubView('passwords')}
             className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer flex items-center justify-between"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-slate-100 text-slate-700 rounded-xl">
+              <div className="p-2 bg-slate-900 text-emerald-400 rounded-xl">
                 <Key className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Passwörter</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Geschützte Passwort-Hinweise</p>
+                <p className="text-[11px] text-slate-500 font-serif">Inkl. 1Password Partner-Empfehlung</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -255,8 +263,56 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Zurück zum Personal Space</span>
+            <span>Zurück zur Übersicht</span>
           </button>
+
+          {/* SUB-VIEW: PASSWÖRTER MIT 1PASSWORD AFFILIATE */}
+          {subView === 'passwords' && (
+            <div className="space-y-4">
+              
+              {/* 1PASSWORD AFFILIATE BANNER */}
+              <div className="p-4 rounded-2xl bg-slate-900 text-white border-2 border-blue-500 space-y-3 shadow-md">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Lock className="w-5 h-5 text-blue-400" />
+                    <span className="font-bold text-sm text-white">1Password Partner-Empfehlung</span>
+                  </div>
+                  <span className="text-[9px] font-mono bg-blue-600 text-white px-2 py-0.5 rounded-md font-bold">
+                    Empfohlen
+                  </span>
+                </div>
+
+                <p className="text-xs text-slate-300 font-serif leading-relaxed">
+                  Für maximale digitale Sicherheit empfehlen wir die Speicherung vertraulicher Passwörter bei unserem Partner <strong>1Password</strong>.
+                  Speichern Sie Passwörter, Notfall-PINs und digitale Nachlass-Schlüssel Ende-zu-Ende verschlüsselt.
+                </p>
+
+                <a
+                  href="https://1password.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+                >
+                  <span>Jetzt 1Password sicher ausprobieren</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* LOCAL HINTS LIST */}
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
+                <h4 className="font-serif font-bold text-sm text-slate-900">Passwort-Hinweise in KALEIDOspace</h4>
+                <div className="space-y-2">
+                  {passwords.map((p) => (
+                    <div key={p.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                      <span className="font-bold text-slate-900">{p.service}</span>
+                      <span className="text-[11px] text-slate-500">{p.hint}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
 
           {subView === 'profile' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
@@ -282,6 +338,28 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             <SecurityVault />
           )}
 
+          {subView === 'interests-hobbies' && (
+            <div className="space-y-3 text-xs font-serif">
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-2">
+                <h4 className="font-bold font-sans text-slate-900">Geistige Interessen</h4>
+                <ul className="list-disc list-inside space-y-1 text-slate-700">
+                  {interests.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-2">
+                <h4 className="font-bold font-sans text-slate-900">Körperliche Hobbys</h4>
+                <ul className="list-disc list-inside space-y-1 text-slate-700">
+                  {hobbies.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
           {subView === 'bucketlist' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
               <h3 className="font-serif font-bold text-base text-slate-900">Meine Wünsche & Bucket List</h3>
@@ -304,6 +382,18 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               <p><strong>Stärken:</strong> {myWay.strengths}</p>
               <p><strong>Vision:</strong> {myWay.vision}</p>
               <p><strong>Was ist NICHT mein Weg:</strong> {myWay.notMyWay}</p>
+            </div>
+          )}
+
+          {subView === 'reflections' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs font-serif">
+              <h3 className="font-serif font-bold text-base text-slate-900 font-sans">Meine Gedanken (Gedanken-Stream)</h3>
+              {reflections.map((r) => (
+                <div key={r.id} className="p-3 bg-amber-50 rounded-xl border border-amber-200">
+                  <span className="text-[10px] font-mono text-amber-800 block mb-1">{r.date}</span>
+                  <p className="text-slate-800">{r.text}</p>
+                </div>
+              ))}
             </div>
           )}
         </div>

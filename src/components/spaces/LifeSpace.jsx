@@ -4,7 +4,7 @@ import { Target, BookOpen, HelpCircle, Calendar, ShieldCheck, FileText, Building
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
 
-export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel }) => {
+export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
 
   const [guidelines, setGuidelines] = useState([
@@ -14,17 +14,25 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel }) => {
   ]);
 
   return (
-    <div className="w-full space-y-4 select-none pb-20">
+    <div className="w-full space-y-4 select-none pb-12">
       
-      {/* SPACE HEADER */}
+      {/* SPACE HEADER WITH HOME BACK BUTTON */}
       <div className="p-4 bg-blue-600 text-white rounded-3xl border-2 border-blue-700 shadow-md">
+        <button
+          onClick={onGoHome}
+          className="flex items-center gap-1 text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-xl mb-3 transition-all"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Zurück zur Startseite</span>
+        </button>
+
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-white text-blue-600 rounded-2xl shadow-xs">
             <Target className="w-6 h-6" />
           </div>
           <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-blue-700 px-2.5 py-0.5 rounded-full">
-              Space 3
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-blue-700 px-2 py-0.5 rounded-full">
+              Life Space
             </span>
             <h2 className="text-xl font-serif font-bold">Life Space</h2>
             <p className="text-xs text-blue-100 font-serif">
@@ -36,7 +44,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel }) => {
 
       {/* OVERVIEW SUB-MODULE CARDS */}
       {subView === 'overview' && (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           
           {/* MODULE 1: LEBENSPHASEN UND THEMEN */}
           <div
@@ -134,7 +142,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel }) => {
             className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Zurück zum Life Space</span>
+            <span>Zurück zur Übersicht</span>
           </button>
 
           {subView === 'guidelines' && (

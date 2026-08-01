@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Lock, Key, FileText, Download, Plus, Trash2, CheckCircle2, Eye, ShieldAlert } from 'lucide-react';
+import { ShieldCheck, Lock, Key, FileText, Download, Plus, Trash2, CheckCircle2 } from 'lucide-react';
 
 const INITIAL_VAULT_ITEMS = [
   {
@@ -32,7 +31,7 @@ const INITIAL_VAULT_ITEMS = [
   },
 ];
 
-export const SecurityVault = ({ darkMode = false }) => {
+export const SecurityVault = () => {
   const [items, setItems] = useState(INITIAL_VAULT_ITEMS);
   const [isAdding, setIsAdding] = useState(false);
   const [title, setTitle] = useState('');
@@ -66,52 +65,49 @@ export const SecurityVault = ({ darkMode = false }) => {
   };
 
   return (
-    <div className="w-full space-y-8 select-none">
+    <div className="w-full space-y-4 select-none">
       
       {/* Header Banner with Safe Status Indicator */}
-      <div className={`p-6 lg:p-8 rounded-3xl border shadow-lg transition-colors duration-300 ${
-        darkMode ? 'bg-slate-900/90 border-slate-800 text-white' : 'bg-white/90 border-slate-200/90 text-slate-900'
-      }`}>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-2xl">
-              <ShieldCheck className="w-6 h-6 animate-pulse" />
+      <div className="p-4 bg-white rounded-3xl border-2 border-slate-200 shadow-md space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-emerald-100 text-emerald-800 rounded-xl">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-3 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
-                Ebene 4 • Security Vault
+              <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Security Vault
               </span>
-              <h2 className="text-3xl font-serif font-bold tracking-tight">
-                Datentresor (Security Vault)
-              </h2>
+              <h3 className="text-lg font-serif font-bold text-slate-900">
+                Datentresor
+              </h3>
             </div>
           </div>
 
-          {/* SAFE INDICATOR BADGE */}
-          <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/80 px-4 py-2 rounded-2xl border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-bold shadow-xs">
-            <Lock className="w-4 h-4 text-emerald-600" />
-            <span>TRESOR GESICHERT (AES-256)</span>
+          <div className="flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200 text-emerald-800 text-[10px] font-bold">
+            <Lock className="w-3.5 h-3.5 text-emerald-600" />
+            <span>AES-256 GESICHERT</span>
           </div>
         </div>
       </div>
 
       {/* ADD DOCUMENT FORM */}
       {isAdding && (
-        <form onSubmit={handleAddItem} className="p-6 rounded-3xl bg-slate-900 text-white space-y-4 shadow-xl border border-emerald-500/30">
-          <h4 className="font-serif font-bold text-sm text-emerald-300">Neues Tresor-Dokument verschlüsselt hinterlegen</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <form onSubmit={handleAddItem} className="p-4 rounded-2xl bg-slate-900 text-white space-y-3 shadow-xl border border-emerald-500/30">
+          <h4 className="font-serif font-bold text-xs text-emerald-300">Neues Tresor-Dokument hinterlegen</h4>
+          <div className="space-y-2 text-xs">
             <input
               type="text"
-              placeholder="Bezeichnung (z.B. Testamentsabschrift, Patientenvorausverfügung)"
+              placeholder="Bezeichnung (z.B. Patientenverfügung, Erbschaft)"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none"
+              className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none"
               required
             />
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none"
+              className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white focus:outline-none"
             >
               <option value="Vorsorgedokumente">Vorsorgedokumente</option>
               <option value="Rechtliche Dokumente">Rechtliche Dokumente</option>
@@ -119,77 +115,76 @@ export const SecurityVault = ({ darkMode = false }) => {
             </select>
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2">
+          <div className="flex items-center justify-end gap-2 pt-1">
             <button
               type="button"
               onClick={() => setIsAdding(false)}
-              className="px-4 py-2 text-xs text-slate-400 hover:text-white"
+              className="px-3 py-1.5 text-xs text-slate-400"
             >
               Abbrechen
             </button>
             <button
               type="submit"
-              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs"
+              className="px-4 py-1.5 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs"
             >
-              Verschlüsselt speichern
+              Verschlüsseln & Speichern
             </button>
           </div>
         </form>
       )}
 
-      {/* VAULT ITEMS LIST */}
-      <div className="space-y-4">
+      {/* VAULT ITEMS LIST — STRICTLY SINGLE COLUMN FOR MOBILE! */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-serif font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 text-emerald-600" />
+          <h4 className="font-serif font-bold text-sm text-slate-900 flex items-center gap-1.5">
+            <FileText className="w-4 h-4 text-emerald-600" />
             <span>Geschützte Dokumente ({items.length})</span>
-          </h3>
+          </h4>
 
           <button
             onClick={() => setIsAdding(!isAdding)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+            className="flex items-center gap-1 px-3 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-bold shadow-xs active:scale-95 cursor-pointer"
           >
-            <Plus className="w-4 h-4 text-emerald-400 dark:text-slate-950" />
+            <Plus className="w-3.5 h-3.5 text-emerald-400" />
             <span>Dokument hinzufügen</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* SINGLE COLUMN STACK FOR MOBILE ONLY */}
+        <div className="grid grid-cols-1 gap-3">
           {items.map((item) => (
             <div
               key={item.id}
-              className={`p-6 rounded-3xl border shadow-md space-y-4 flex flex-col justify-between transition-colors duration-300 ${
-                darkMode ? 'bg-slate-900/90 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-900'
-              }`}
+              className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm space-y-3 flex flex-col justify-between"
             >
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                  <span className="text-[10px] font-mono font-bold uppercase text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                     {item.category}
                   </span>
                   <span className="text-[10px] font-mono text-slate-400">{item.fileSize}</span>
                 </div>
 
-                <h4 className="font-serif font-bold text-sm text-slate-900 dark:text-white leading-snug">
+                <h5 className="font-serif font-bold text-sm text-slate-900 leading-snug">
                   {item.title}
-                </h4>
+                </h5>
 
-                <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700 text-xs space-y-1">
-                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono">
                     <span>SCHUTZ:</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">{item.securityStatus}</span>
+                    <span className="font-bold text-emerald-600">{item.securityStatus}</span>
                   </div>
-                  <span className="text-[11px] text-slate-600 dark:text-slate-300 font-serif block">
+                  <span className="text-[11px] text-slate-700 font-serif block">
                     Zuweisung: {item.trustee}
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+              <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
                 <span className="text-[10px] font-mono text-slate-400">Aktualisiert: {item.updatedAt}</span>
                 <button
                   onClick={() => handleDeleteItem(item.id)}
-                  className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg transition-colors"
+                  className="text-slate-400 hover:text-rose-600 p-1 rounded-lg transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
