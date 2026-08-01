@@ -87,14 +87,6 @@ export function App() {
             {activeSpace === 'home' && (
               <div className="space-y-4 select-none">
                 
-                {/* LIFE LOOP ORBIT CENTERPIECE */}
-                <OrbitTimeline
-                  memories={state.memories}
-                  phases={state.phases}
-                  simulatedDate={state.simulatedDate}
-                  darkMode={false}
-                />
-
                 {/* 3 SPACE PORTAL CARDS */}
                 <div className="space-y-3">
                   <h3 className="font-serif font-bold text-sm text-slate-900 px-1">
