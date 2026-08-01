@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare, GitBranch, User, Clock, CircleDot } from 'lucide-react';
+import { PieChart, Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare, GitBranch, User, Clock, CircleDot } from 'lucide-react';
 import { PhaseSchatullen } from '../PhaseSchatullen';
 import { Lifeloop } from '../Lifeloop';
 
@@ -170,7 +170,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
 
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-white text-red-600 rounded-2xl shadow-xs">
-            <Heart className="w-6 h-6" />
+            <PieChart className="w-6 h-6" />
           </div>
           <div>
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-red-700 px-2 py-0.5 rounded-full">

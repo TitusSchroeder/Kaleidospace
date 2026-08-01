@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Compass, Target } from 'lucide-react';
+import { PieChart, Fingerprint, Target } from 'lucide-react';
 
 export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
   const spaces = [
@@ -10,7 +10,7 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
       color: '#dc2626',
       borderSolid: 'border-red-600',
       textSolid: 'text-red-600',
-      icon: Heart,
+      icon: PieChart,
     },
     {
       id: 'personal',
@@ -18,7 +18,7 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
       color: '#10b981',
       borderSolid: 'border-emerald-600',
       textSolid: 'text-emerald-600',
-      icon: Compass,
+      icon: Fingerprint,
     },
     {
       id: 'life',

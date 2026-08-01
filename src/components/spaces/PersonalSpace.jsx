@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2, Plus, Trash2, Edit3, Quote } from 'lucide-react';
+import { Fingerprint, Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2, Plus, Trash2, Edit3, Quote } from 'lucide-react';
 import { WerteKompass } from '../WerteKompass';
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
@@ -145,7 +145,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
 
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-white text-emerald-600 rounded-2xl shadow-xs">
-            <Compass className="w-6 h-6" />
+            <Fingerprint className="w-6 h-6" />
           </div>
           <div>
             <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-700 px-2 py-0.5 rounded-full">
