@@ -18,25 +18,22 @@ export const PhaseSchatullen = ({
     : [];
 
   return (
-    <div className="w-full space-y-6 select-none">
+    <div className="w-full space-y-4 select-none">
       
-      {/* VIEW 1: THE 5 ELEGANT STORY CHESTS (SCHATULLEN) */}
+      {/* VIEW 1: THE 5 STORY CHESTS STACKED VERTICALLY */}
       {!openedPhaseId ? (
-        <div className="space-y-6">
-          <div className="text-center space-y-1">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-              5 Schatzkisten des Lebens
-            </span>
-            <h3 className="text-2xl font-serif font-bold text-slate-900">
-              Die Schatullen der Lebensphasen
+        <div className="space-y-3">
+          <div className="text-center space-y-0.5">
+            <h3 className="text-lg font-serif font-bold text-slate-900">
+              Die 5 Schatullen der Lebensphasen
             </h3>
-            <p className="text-xs text-slate-500 font-serif max-w-md mx-auto">
-              Jede Schatulle bewahrt die Geschichten, Fotos und Zeitkapseln eines Lebensabschnitts. Klicken Sie auf eine Schatulle, um das Album zu öffnen.
+            <p className="text-xs text-slate-500 font-serif">
+              Jede Schatulle bewahrt die Geschichten eines Lebensabschnitts.
             </p>
           </div>
 
-          {/* 5 SCHATULLEN CARDS GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+          {/* 5 SCHATULLEN CARDS - STRICTLY SINGLE COLUMN STACKED UNDERNEATH EACH OTHER */}
+          <div className="grid grid-cols-1 gap-3 pt-1">
             {phases.map((phase, idx) => {
               const memsInPhase = memories.filter((m) => m.phaseId === phase.id);
               const lockedCount = memsInPhase.filter(
@@ -44,127 +41,104 @@ export const PhaseSchatullen = ({
               ).length;
 
               return (
-                <motion.div
+                <div
                   key={phase.id}
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
                   onClick={() => setOpenedPhaseId(phase.id)}
-                  className="glass-card rounded-3xl p-6 border-2 border-slate-200/90 shadow-md bg-white hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between space-y-6 relative overflow-hidden group"
-                  style={{ borderColor: phase.color }}
+                  className="rounded-2xl p-4 border-2 border-slate-200 bg-white hover:border-slate-400 transition-all cursor-pointer flex flex-col justify-between space-y-3 relative overflow-hidden group shadow-sm"
+                  style={{ borderLeftWidth: '6px', borderLeftColor: phase.color }}
                 >
-                  {/* Decorative Color Top Accent Bar */}
-                  <div
-                    className="absolute top-0 left-0 right-0 h-2"
-                    style={{ backgroundColor: phase.color }}
-                  />
-
-                  {/* Header info */}
-                  <div className="space-y-2 pt-1">
+                  <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+                      <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
                         {phase.startAge}–{phase.endAge} Jahre
                       </span>
 
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                        <Box className="w-3.5 h-3.5 text-emerald-600" />
+                      <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                        <Box className="w-3 h-3 text-emerald-600" />
                         <span>{memsInPhase.length} Erinnerungen</span>
                       </div>
                     </div>
 
-                    <h4 className="font-serif font-bold text-lg text-slate-900 group-hover:text-emerald-800 transition-colors">
+                    <h4 className="font-serif font-bold text-base text-slate-900">
                       Schatulle {idx + 1}: {phase.name}
                     </h4>
 
-                    <p className="text-xs text-slate-600 font-serif leading-relaxed line-clamp-2">
+                    <p className="text-xs text-slate-600 font-serif leading-snug">
                       {phase.description}
                     </p>
                   </div>
 
-                  {/* Locked status & open trigger */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs">
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
                     {lockedCount > 0 ? (
-                      <span className="flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-md border border-amber-200">
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
                         <Lock className="w-3 h-3 text-amber-600" />
-                        <span>{lockedCount} Zeitkapsel(n) versiegelt</span>
+                        <span>{lockedCount} Kapsel(n) versiegelt</span>
                       </span>
                     ) : (
-                      <span className="text-[11px] text-slate-400 font-mono">
+                      <span className="text-[10px] text-slate-400 font-mono">
                         {memsInPhase.length > 0 ? 'Freigegeben' : 'Leer'}
                       </span>
                     )}
 
-                    <div className="flex items-center gap-1 font-bold text-slate-900 group-hover:translate-x-1 transition-transform">
-                      <span>Schatulle öffnen</span>
-                      <ChevronRight className="w-4 h-4 text-emerald-600" />
+                    <div className="flex items-center gap-1 font-bold text-xs text-slate-900">
+                      <span>Öffnen</span>
+                      <ChevronRight className="w-4 h-4 text-slate-600" />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
       ) : (
-        /* VIEW 2: OPENED SCHATULLE MEMORY ALBUM */
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="space-y-6"
-        >
-          {/* Top Bar with Back Button */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-200 gap-4">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setOpenedPhaseId(null)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4 text-emerald-400" />
-                <span>Alle Schatullen anzeigen</span>
-              </button>
-
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-4 h-4 rounded-full shadow-xs"
-                  style={{ backgroundColor: openedPhase?.color }}
-                />
-                <h3 className="font-serif font-bold text-xl lg:text-2xl text-slate-900">
-                  Schatulle: {openedPhase?.name}
-                </h3>
-              </div>
+        /* VIEW 2: ALBUM VIEW OF OPENED SCHATULLE (STRICTLY VERTICALLY STACKED UNDERNEATH EACH OTHER!) */
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900 text-white shadow-md">
+            <div>
+              <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase">
+                {openedPhase.startAge}–{openedPhase.endAge} Jahre
+              </span>
+              <h3 className="font-serif font-bold text-base text-white">
+                Schatulle: {openedPhase.name}
+              </h3>
             </div>
 
-            <span className="text-xs font-mono font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-xl border border-emerald-200">
-              {phaseMemories.length} Erinnerungen in dieser Schatulle
-            </span>
+            <button
+              onClick={() => setOpenedPhaseId(null)}
+              className="flex items-center gap-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-xl border border-slate-700"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Zurück</span>
+            </button>
           </div>
 
-          {/* Cards Grid for Opened Schatulle */}
+          {/* MEMORY CARDS - STRICTLY SINGLE COLUMN STACKED */}
           {phaseMemories.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <AnimatePresence>
-                {phaseMemories.map((mem) => (
-                  <MemoryCard
-                    key={mem.id}
-                    memory={mem}
-                    phase={openedPhase}
-                    simulatedDate={simulatedDate}
-                    onDeleteMemory={onDeleteMemory}
-                  />
-                ))}
-              </AnimatePresence>
+            <div className="grid grid-cols-1 gap-4">
+              {phaseMemories.map((memory) => (
+                <MemoryCard
+                  key={memory.id}
+                  memory={memory}
+                  simulatedDate={simulatedDate}
+                  onDelete={onDeleteMemory}
+                />
+              ))}
             </div>
           ) : (
-            <div className="text-center py-16 space-y-3 bg-white rounded-3xl border border-dashed border-slate-200">
-              <p className="text-xs text-slate-400">Diese Schatulle ist noch leer.</p>
+            <div className="p-8 text-center bg-white rounded-2xl border-2 border-slate-200 space-y-3">
+              <Box className="w-8 h-8 text-slate-300 mx-auto" />
+              <p className="text-xs text-slate-500 font-serif">
+                Diese Schatulle ist noch leer. Fügen Sie Ihre erste Erinnerung hinzu.
+              </p>
               <button
                 onClick={onOpenCreator}
-                className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold transition-all shadow-md"
+                className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl"
               >
-                Erste Erinnerung hinzufügen
+                Erinnerung verfassen
               </button>
             </div>
           )}
-        </motion.div>
+        </div>
       )}
 
     </div>

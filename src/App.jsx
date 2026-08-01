@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getInitialState, saveState } from './utils/storage';
 import { SpaceRingHeader } from './components/SpaceRingHeader';
-import { OrbitTimeline } from './components/OrbitTimeline';
 import { ExperienceSpace } from './components/spaces/ExperienceSpace';
 import { PersonalSpace } from './components/spaces/PersonalSpace';
 import { LifeSpace } from './components/spaces/LifeSpace';
 import { IntentionalCreator } from './components/IntentionalCreator';
-import { Heart, Compass, Target, Plus, ArrowRight } from 'lucide-react';
+import { Heart, Compass, Target, Plus, Sparkles, Box, Lock, ShieldCheck } from 'lucide-react';
 
 export function App() {
   const [state, setState] = useState(getInitialState);
@@ -68,11 +67,11 @@ export function App() {
   return (
     <div className="w-full min-h-screen bg-slate-900 flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans">
       
-      {/* MOBILE-FIRST FULL VIEWPORT CONTAINER (MAX-W-MD) */}
+      {/* MOBILE CONTAINER (MAX-W-MD) */}
       <div className="w-full max-w-md min-h-screen bg-[#fafaf8] text-slate-900 shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
         
         <div className="flex-1">
-          {/* TOP 3 SPACE RINGS — ONLY DISPLAYED ON HOMEPAGE! (Disappears when entering a space) */}
+          {/* TOP 3 SPACE RINGS — ONLY DISPLAYED ON HOMEPAGE */}
           {activeSpace === 'home' && (
             <SpaceRingHeader
               activeSpace={activeSpace}
@@ -80,85 +79,79 @@ export function App() {
             />
           )}
 
-          {/* MAIN CONTAINER CONTENT STAGE */}
+          {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW */}
+            {/* HOMEPAGE VIEW — NO DUPLICATE CARDS! */}
             {activeSpace === 'home' && (
               <div className="space-y-4 select-none">
                 
-                {/* 3 SPACE PORTAL CARDS */}
-                <div className="space-y-3">
-                  <h3 className="font-serif font-bold text-sm text-slate-900 px-1">
-                    Die 3 Haupt-Räume (Spaces)
-                  </h3>
+                {/* WELCOME SUMMARY CARD */}
+                <div className="p-5 bg-white rounded-3xl border-2 border-slate-200 shadow-md space-y-3">
+                  <div className="flex items-center gap-2 text-emerald-600">
+                    <Sparkles className="w-5 h-5" />
+                    <span className="font-serif font-bold text-base text-slate-900">Willkommen in KALEIDOspace</span>
+                  </div>
 
-                  {/* CARD 1: EXPERIENCE SPACE */}
+                  <p className="text-xs text-slate-600 font-serif leading-relaxed">
+                    Wählen Sie oben einen der 3 Räume (<strong>Experience</strong>, <strong>Personal</strong> oder <strong>Life</strong>), um Ihre Momente, Werte und Vorsorge zu verwalten.
+                  </p>
+
+                  <button
+                    onClick={() => setIsCreatorOpen(true)}
+                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    <Plus className="w-4 h-4 text-emerald-400" />
+                    <span>Erinnerung oder Zeitkapsel anlegen</span>
+                  </button>
+                </div>
+
+                {/* OVERVIEW STATS STACKED VERTICALLY */}
+                <div className="grid grid-cols-1 gap-2.5">
                   <div
                     onClick={() => setActiveSpace('experience')}
-                    className="p-4 bg-red-600 text-white rounded-3xl border-2 border-red-700 shadow-md hover:bg-red-700 transition-all cursor-pointer flex items-center justify-between"
+                    className="p-4 bg-red-50 rounded-2xl border border-red-200 flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 bg-white text-red-600 rounded-2xl">
-                        <Heart className="w-6 h-6" />
-                      </div>
+                      <Heart className="w-5 h-5 text-red-600" />
                       <div>
-                        <span className="text-[9px] font-mono font-bold uppercase bg-red-700 px-2 py-0.5 rounded-full">
-                          Space 1
-                        </span>
-                        <h4 className="font-serif font-bold text-base">Experience Space</h4>
-                        <p className="text-xs text-red-100 font-serif">Wertvolle Momente bewahren</p>
+                        <span className="font-bold text-xs text-slate-900 block">Experience Space</span>
+                        <span className="text-[10px] text-slate-500 font-mono">{state.memories.length} gespeicherte Momente</span>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-white" />
                   </div>
 
-                  {/* CARD 2: PERSONAL SPACE */}
                   <div
                     onClick={() => setActiveSpace('personal')}
-                    className="p-4 bg-emerald-600 text-white rounded-3xl border-2 border-emerald-700 shadow-md hover:bg-emerald-700 transition-all cursor-pointer flex items-center justify-between"
+                    className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 bg-white text-emerald-600 rounded-2xl">
-                        <Compass className="w-6 h-6" />
-                      </div>
+                      <Compass className="w-5 h-5 text-emerald-600" />
                       <div>
-                        <span className="text-[9px] font-mono font-bold uppercase bg-emerald-700 px-2 py-0.5 rounded-full">
-                          Space 2
-                        </span>
-                        <h4 className="font-serif font-bold text-base">Personal Space</h4>
-                        <p className="text-xs text-emerald-100 font-serif">Das Leben bewusst leben</p>
+                        <span className="font-bold text-xs text-slate-900 block">Personal Space</span>
+                        <span className="text-[10px] text-slate-500 font-mono">{(state.werte || []).length} Prinzipien in der Werteschrift</span>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-white" />
                   </div>
 
-                  {/* CARD 3: LIFE SPACE */}
                   <div
                     onClick={() => setActiveSpace('life')}
-                    className="p-4 bg-blue-600 text-white rounded-3xl border-2 border-blue-700 shadow-md hover:bg-blue-700 transition-all cursor-pointer flex items-center justify-between"
+                    className="p-4 bg-blue-50 rounded-2xl border border-blue-200 flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 bg-white text-blue-600 rounded-2xl">
-                        <Target className="w-6 h-6" />
-                      </div>
+                      <Target className="w-5 h-5 text-blue-600" />
                       <div>
-                        <span className="text-[9px] font-mono font-bold uppercase bg-blue-700 px-2 py-0.5 rounded-full">
-                          Space 3
-                        </span>
-                        <h4 className="font-serif font-bold text-base">Life Space</h4>
-                        <p className="text-xs text-blue-100 font-serif">Wesentliches im Blick behalten</p>
+                        <span className="font-bold text-xs text-slate-900 block">Life Space</span>
+                        <span className="text-[10px] text-slate-500 font-mono">Datentresor & Vorsorgedokumente</span>
                       </div>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-white" />
                   </div>
-
                 </div>
 
               </div>
             )}
 
-            {/* SPACE 1: EXPERIENCE SPACE (Top rings disappear!) */}
+            {/* SPACE 1: EXPERIENCE SPACE */}
             {activeSpace === 'experience' && (
               <ExperienceSpace
                 memories={state.memories}
@@ -170,7 +163,7 @@ export function App() {
               />
             )}
 
-            {/* SPACE 2: PERSONAL SPACE (Top rings disappear!) */}
+            {/* SPACE 2: PERSONAL SPACE */}
             {activeSpace === 'personal' && (
               <PersonalSpace
                 werte={state.werte || []}
@@ -182,7 +175,7 @@ export function App() {
               />
             )}
 
-            {/* SPACE 3: LIFE SPACE (Top rings disappear!) */}
+            {/* SPACE 3: LIFE SPACE */}
             {activeSpace === 'life' && (
               <LifeSpace
                 letztesKapitel={state.letztesKapitel}
