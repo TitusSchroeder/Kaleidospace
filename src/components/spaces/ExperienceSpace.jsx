@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare } from 'lucide-react';
+import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare, GitBranch, User } from 'lucide-react';
 import { PhaseSchatullen } from '../PhaseSchatullen';
 
 export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onDeleteMemory, onOpenCreator, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
+  const [familyTab, setFamilyTab] = useState('tree'); // 'tree' or 'list'
+  const [selectedPerson, setSelectedPerson] = useState(null);
 
   // Interactive Events List
   const [eventsList, setEventsList] = useState([
@@ -16,12 +18,62 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
   const [newEventDate, setNewEventDate] = useState('');
   const [isAddingEvent, setIsAddingEvent] = useState(false);
 
-  // Interactive Family & Friends List
+  // Interactive Family & Friends List with Generational Metadata for Family Tree
   const [friendsList, setFriendsList] = useState([
+    {
+      id: 'f3',
+      name: 'Opa Heinrich',
+      role: 'Großvater',
+      gen: 1, // Generation 1 (Großeltern)
+      birthYear: '1942',
+      thingsToSay: 'Deine Geschichten aus der Werkstatt prägen mich noch heute.',
+      questionToAsk: 'Wie hast du damals die ersten Jahre gemeistert?',
+      inspiringTrait: 'Handwerkliche Geduld & Humor',
+      isRoleModel: true,
+      circle: 'Familien-Circle',
+    },
+    {
+      id: 'f4',
+      name: 'Oma Martha',
+      role: 'Großmutter',
+      gen: 1,
+      birthYear: '1945',
+      thingsToSay: 'Dein Holunderblütensirup schmeckt nach Kindheit.',
+      questionToAsk: 'Welche Lieder habt ihr früher gesungen?',
+      inspiringTrait: 'Wärme & Geborgenheit',
+      isRoleModel: true,
+      circle: 'Familien-Circle',
+    },
+    {
+      id: 'f0',
+      name: 'Titus (Ich)',
+      role: 'Familienoberhaupt',
+      gen: 2, // Generation 2 (Eltern / Ich)
+      birthYear: '1976',
+      thingsToSay: 'Verantwortung für unsere Werte übernehmen.',
+      questionToAsk: 'Was bleibt von meinem Handeln?',
+      inspiringTrait: 'Ausdauer & Besonnenheit',
+      isRoleModel: false,
+      circle: 'Ich',
+    },
+    {
+      id: 'f5',
+      name: 'Marie Schröder',
+      role: 'Ehefrau',
+      gen: 2,
+      birthYear: '1978',
+      thingsToSay: 'Danke für 25 Jahre gemeinsame Liebe.',
+      questionToAsk: 'Wohin reisen wir als Nächstes?',
+      inspiringTrait: 'Bedingungslose Herzlichkeit',
+      isRoleModel: true,
+      circle: 'Engste Vertraute',
+    },
     {
       id: 'f1',
       name: 'Clara Schröder',
       role: 'Tochter',
+      gen: 3, // Generation 3 (Kinder)
+      birthYear: '2008',
       thingsToSay: 'Ich bin stolz auf deinen Mut beim Studium.',
       questionToAsk: 'Wie geht es dir wirklich mit dem Umzug?',
       inspiringTrait: 'Bedingungslose Lebensfreude & Neugier',
@@ -32,26 +84,19 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
       id: 'f2',
       name: 'Jonas Schröder',
       role: 'Sohn',
+      gen: 3,
+      birthYear: '2012',
       thingsToSay: 'Danke für deine Ruhe in schweren Tagen.',
       questionToAsk: 'Wann machen wir unsere nächste Bergtour?',
       inspiringTrait: 'Gelassenheit & tiefes Zuhören',
       isRoleModel: true,
       circle: 'Engste Vertraute',
     },
-    {
-      id: 'f3',
-      name: 'Opa Heinrich',
-      role: 'Großvater',
-      thingsToSay: 'Deine Geschichten aus der Werkstatt prägen mich noch heute.',
-      questionToAsk: 'Wie hast du damals die ersten Jahre gemeistert?',
-      inspiringTrait: 'Handwerkliche Geduld & Humor',
-      isRoleModel: true,
-      circle: 'Familien-Circle',
-    },
   ]);
   const [isAddingFriend, setIsAddingFriend] = useState(false);
   const [newFriendName, setNewFriendName] = useState('');
   const [newFriendRole, setNewFriendRole] = useState('Familie');
+  const [newFriendGen, setNewFriendGen] = useState(2);
   const [newFriendTrait, setNewFriendTrait] = useState('');
 
   // Handlers
@@ -86,6 +131,8 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
         id: `f-${Date.now()}`,
         name: newFriendName.trim(),
         role: newFriendRole,
+        gen: parseInt(newFriendGen, 10),
+        birthYear: '2000',
         thingsToSay: 'Eine wichtige Notiz hinzufügen...',
         questionToAsk: 'Eine Frage für das nächste Gespräch...',
         inspiringTrait: newFriendTrait.trim() || 'Herzlichkeit',
@@ -101,6 +148,11 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
   const handleRemoveFriend = (id) => {
     setFriendsList(friendsList.filter((f) => f.id !== id));
   };
+
+  // Group family members by generation for the Family Tree
+  const gen1 = friendsList.filter((f) => f.gen === 1);
+  const gen2 = friendsList.filter((f) => f.gen === 2);
+  const gen3 = friendsList.filter((f) => f.gen === 3);
 
   return (
     <div className="w-full space-y-4 select-none pb-12">
@@ -166,18 +218,18 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             <ChevronRight className="w-5 h-5 text-slate-400" />
           </div>
 
-          {/* MODULE 3: FAMILIE UND FREUNDE */}
+          {/* MODULE 3: FAMILIE UND FREUNDE (GRAPHISCHER STAMMBAUM) */}
           <div
             onClick={() => setSubView('family')}
             className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-red-500 transition-all cursor-pointer flex items-center justify-between"
           >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-emerald-100 text-emerald-600 rounded-xl">
-                <Users className="w-5 h-5" />
+                <GitBranch className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-serif font-bold text-sm text-slate-900">Familie und Freunde</h3>
-                <p className="text-[11px] text-slate-500 font-serif">{friendsList.length} Personen & Notizen</p>
+                <h3 className="font-serif font-bold text-sm text-slate-900">Familie und Stammbaum</h3>
+                <p className="text-[11px] text-slate-500 font-serif">Graphischer Stammbaum ({friendsList.length} Personen)</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -242,7 +294,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             />
           )}
 
-          {/* SUB-VIEW 2: BEVORSTEHENDE EREIGNISSE (FULLY INTERACTIVE) */}
+          {/* SUB-VIEW 2: BEVORSTEHENDE EREIGNISSE */}
           {subView === 'events' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4">
               <div className="flex items-center justify-between border-b pb-2">
@@ -302,79 +354,234 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             </div>
           )}
 
-          {/* SUB-VIEW 3: FAMILIE UND FREUNDE (FULLY INTERACTIVE) */}
+          {/* SUB-VIEW 3: GRAPHISCHER STAMMBAUM & FAMILIE */}
           {subView === 'family' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4">
-              <div className="flex items-center justify-between border-b pb-2">
-                <h3 className="font-serif font-bold text-base text-slate-900 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-emerald-600" />
-                  <span>Familie und Freunde ({friendsList.length})</span>
-                </h3>
+              
+              {/* Header & Tab Toggle Switch */}
+              <div className="flex items-center justify-between border-b pb-3 gap-2">
+                <div className="flex items-center gap-2">
+                  <GitBranch className="w-5 h-5 text-emerald-600" />
+                  <h3 className="font-serif font-bold text-base text-slate-900">Familienstammbaum</h3>
+                </div>
 
-                <button
-                  onClick={() => setIsAddingFriend(!isAddingFriend)}
-                  className="px-3 py-1 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer"
-                >
-                  <Plus className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Person eintragen</span>
-                </button>
+                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-[11px] font-bold">
+                  <button
+                    onClick={() => setFamilyTab('tree')}
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
+                      familyTab === 'tree' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Stammbaum
+                  </button>
+                  <button
+                    onClick={() => setFamilyTab('list')}
+                    className={`px-2.5 py-1 rounded-lg transition-all ${
+                      familyTab === 'list' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Liste ({friendsList.length})
+                  </button>
+                </div>
               </div>
 
-              {isAddingFriend && (
-                <form onSubmit={handleAddFriend} className="p-3 bg-slate-900 text-white rounded-xl space-y-2 text-xs">
-                  <input
-                    type="text"
-                    placeholder="Name der Person"
-                    value={newFriendName}
-                    onChange={(e) => setNewFriendName(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Beziehung / Rolle (z.B. Tochter, Freund)"
-                    value={newFriendRole}
-                    onChange={(e) => setNewFriendRole(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Inspirierende Eigenschaft"
-                    value={newFriendTrait}
-                    onChange={(e) => setNewFriendTrait(e.target.value)}
-                    className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
-                  />
-                  <div className="flex items-center justify-end gap-2 pt-1">
-                    <button type="button" onClick={() => setIsAddingFriend(false)} className="text-slate-400">Abbrechen</button>
-                    <button type="submit" className="px-3 py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg">Hinzufügen</button>
+              {/* TAB 1: GRAPHISCHER STAMMBAUM (VISUAL FAMILY TREE) */}
+              {familyTab === 'tree' && (
+                <div className="space-y-6">
+                  <div className="text-center space-y-1">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      Visualisierter Stammbaum
+                    </span>
+                    <p className="text-xs text-slate-500 font-serif">
+                      Klicken Sie auf eine Person im Stammbaum, um Notizen und Fragen anzuzeigen.
+                    </p>
                   </div>
-                </form>
-              )}
 
-              <div className="grid grid-cols-1 gap-3">
-                {friendsList.map((person) => (
-                  <div key={person.id} className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2 relative">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900 text-sm">{person.name}</span>
-                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold">
-                          {person.role}
+                  {/* GRAPHICAL TREE CONTAINER */}
+                  <div className="p-4 bg-slate-900 text-white rounded-3xl space-y-6 border-2 border-emerald-500/30 relative">
+                    
+                    {/* GENERATION 1: GROSSELTERN (TOP LEVEL) */}
+                    <div className="space-y-2 text-center">
+                      <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
+                        Gen 1 • Großeltern & Vorfahren
+                      </span>
+                      <div className="flex items-center justify-center gap-4 flex-wrap">
+                        {gen1.map((p) => (
+                          <div
+                            key={p.id}
+                            onClick={() => setSelectedPerson(p)}
+                            className={`p-3 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-1 w-32 ${
+                              selectedPerson?.id === p.id
+                                ? 'bg-emerald-600 border-white text-white shadow-lg ring-2 ring-emerald-400'
+                                : 'bg-slate-800 border-emerald-500/40 text-slate-200 hover:border-emerald-400'
+                            }`}
+                          >
+                            <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center font-bold text-xs text-emerald-300">
+                              <User className="w-4 h-4" />
+                            </div>
+                            <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
+                            <span className="text-[9px] font-mono text-emerald-300">{p.role} ({p.birthYear})</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* CONNECTING VERTICAL LINE 1 */}
+                    <div className="w-0.5 h-6 bg-emerald-500/60 mx-auto" />
+
+                    {/* GENERATION 2: ELTERN & ICH (MID LEVEL) */}
+                    <div className="space-y-2 text-center">
+                      <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
+                        Gen 2 • Ich & Partner
+                      </span>
+                      <div className="flex items-center justify-center gap-4 flex-wrap">
+                        {gen2.map((p) => (
+                          <div
+                            key={p.id}
+                            onClick={() => setSelectedPerson(p)}
+                            className={`p-3 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-1 w-32 ${
+                              selectedPerson?.id === p.id
+                                ? 'bg-emerald-600 border-white text-white shadow-lg ring-2 ring-emerald-400'
+                                : 'bg-slate-800 border-emerald-500/40 text-slate-200 hover:border-emerald-400'
+                            }`}
+                          >
+                            <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center font-bold text-xs text-emerald-300">
+                              <User className="w-4 h-4" />
+                            </div>
+                            <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
+                            <span className="text-[9px] font-mono text-emerald-300">{p.role} ({p.birthYear})</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* CONNECTING VERTICAL LINE 2 */}
+                    <div className="w-0.5 h-6 bg-emerald-500/60 mx-auto" />
+
+                    {/* GENERATION 3: KINDER (BOTTOM LEVEL) */}
+                    <div className="space-y-2 text-center">
+                      <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
+                        Gen 3 • Kinder & Nachkommen
+                      </span>
+                      <div className="flex items-center justify-center gap-4 flex-wrap">
+                        {gen3.map((p) => (
+                          <div
+                            key={p.id}
+                            onClick={() => setSelectedPerson(p)}
+                            className={`p-3 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-1 w-32 ${
+                              selectedPerson?.id === p.id
+                                ? 'bg-emerald-600 border-white text-white shadow-lg ring-2 ring-emerald-400'
+                                : 'bg-slate-800 border-emerald-500/40 text-slate-200 hover:border-emerald-400'
+                            }`}
+                          >
+                            <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center font-bold text-xs text-emerald-300">
+                              <User className="w-4 h-4" />
+                            </div>
+                            <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
+                            <span className="text-[9px] font-mono text-emerald-300">{p.role} ({p.birthYear})</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* SELECTED PERSON DETAIL CARD IN TREE VIEW */}
+                  {selectedPerson && (
+                    <div className="p-4 bg-emerald-50 rounded-2xl border-2 border-emerald-300 text-xs space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-serif font-bold text-base text-slate-900">{selectedPerson.name}</span>
+                        <span className="text-[10px] font-bold bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md">
+                          {selectedPerson.role} ({selectedPerson.birthYear})
                         </span>
                       </div>
-
-                      <button onClick={() => handleRemoveFriend(person.id)} className="text-slate-400 hover:text-rose-600 p-1">
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="space-y-1 font-serif text-slate-700">
+                        <p><strong>Dinge, die ich sagen möchte:</strong> „{selectedPerson.thingsToSay}“</p>
+                        <p><strong>Frage für das nächste Gespräch:</strong> „{selectedPerson.questionToAsk}“</p>
+                        <p><strong>Inspirierende Eigenschaft:</strong> {selectedPerson.inspiringTrait}</p>
+                      </div>
                     </div>
+                  )}
+                </div>
+              )}
 
-                    <div className="space-y-1 text-slate-700 font-serif">
-                      <p><strong>Dinge, die ich sagen möchte:</strong> „{person.thingsToSay}“</p>
-                      <p><strong>Frage, die ich stellen möchte:</strong> „{person.questionToAsk}“</p>
-                      <p><strong>Inspirierende Eigenschaft:</strong> {person.inspiringTrait}</p>
-                    </div>
+              {/* TAB 2: LIST VIEW WITH ADD BUTTON */}
+              {familyTab === 'list' && (
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setIsAddingFriend(!isAddingFriend)}
+                    className="w-full py-2 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Person im Stammbaum eintragen</span>
+                  </button>
+
+                  {isAddingFriend && (
+                    <form onSubmit={handleAddFriend} className="p-3 bg-slate-900 text-white rounded-xl space-y-2 text-xs">
+                      <input
+                        type="text"
+                        placeholder="Name der Person"
+                        value={newFriendName}
+                        onChange={(e) => setNewFriendName(e.target.value)}
+                        className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Rolle (z.B. Tochter, Großvater)"
+                        value={newFriendRole}
+                        onChange={(e) => setNewFriendRole(e.target.value)}
+                        className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
+                      />
+                      <select
+                        value={newFriendGen}
+                        onChange={(e) => setNewFriendGen(e.target.value)}
+                        className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
+                      >
+                        <option value={1}>Gen 1 (Großeltern / Vorfahren)</option>
+                        <option value={2}>Gen 2 (Ich / Partner / Geschwister)</option>
+                        <option value={3}>Gen 3 (Kinder / Nachkommen)</option>
+                      </select>
+                      <input
+                        type="text"
+                        placeholder="Inspirierende Eigenschaft"
+                        value={newFriendTrait}
+                        onChange={(e) => setNewFriendTrait(e.target.value)}
+                        className="w-full px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-white"
+                      />
+                      <div className="flex items-center justify-end gap-2 pt-1">
+                        <button type="button" onClick={() => setIsAddingFriend(false)} className="text-slate-400">Abbrechen</button>
+                        <button type="submit" className="px-3 py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg">Hinzufügen</button>
+                      </div>
+                    </form>
+                  )}
+
+                  <div className="grid grid-cols-1 gap-3">
+                    {friendsList.map((person) => (
+                      <div key={person.id} className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2 relative">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-slate-900 text-sm">{person.name}</span>
+                            <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md font-bold">
+                              {person.role} (Gen {person.gen})
+                            </span>
+                          </div>
+
+                          <button onClick={() => handleRemoveFriend(person.id)} className="text-slate-400 hover:text-rose-600 p-1">
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="space-y-1 text-slate-700 font-serif">
+                          <p><strong>Dinge, die ich sagen möchte:</strong> „{person.thingsToSay}“</p>
+                          <p><strong>Frage für das nächste Gespräch:</strong> „{person.questionToAsk}“</p>
+                          <p><strong>Inspirierende Eigenschaft:</strong> {person.inspiringTrait}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           )}
 
