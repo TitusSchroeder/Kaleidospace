@@ -91,29 +91,18 @@ export function App() {
           {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW */}
+            {/* HOMEPAGE VIEW — WILLKOMMEN CARD REMOVED */}
             {activeSpace === 'home' && (
               <div className="space-y-4 select-none">
                 
-                {/* WELCOME SUMMARY CARD */}
-                <div className="p-5 bg-white rounded-3xl border-2 border-slate-200 shadow-md space-y-3">
-                  <div className="flex items-center gap-2 text-emerald-600">
-                    <Sparkles className="w-5 h-5" />
-                    <span className="font-serif font-bold text-base text-slate-900">Willkommen in KALEIDOspace</span>
-                  </div>
-
-                  <p className="text-xs text-slate-600 font-serif leading-relaxed">
-                    Wählen Sie oben einen Raum (<strong>Experience</strong>, <strong>Personal</strong> oder <strong>Life</strong>) oder erkunden Sie Ihren <strong>Lifeloop</strong>.
-                  </p>
-
-                  <button
-                    onClick={() => setIsCreatorOpen(true)}
-                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4 text-emerald-400" />
-                    <span>Erinnerung oder Zeitkapsel anlegen</span>
-                  </button>
-                </div>
+                {/* QUICK INTENTIONAL CREATOR ACTION BUTTON */}
+                <button
+                  onClick={() => setIsCreatorOpen(true)}
+                  className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                >
+                  <Plus className="w-4 h-4 text-emerald-400" />
+                  <span>Erinnerung oder Zeitkapsel anlegen</span>
+                </button>
 
                 {/* LIFELOOP ORBIT ON HOMEPAGE */}
                 <div className="w-full">

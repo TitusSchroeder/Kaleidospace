@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Fingerprint, Target } from 'lucide-react';
 
 // Custom Multi-Faceted Symmetrical Kaleidoskop Icon
-export const KaleidoscopeIcon = ({ className = "w-5 h-5" }) => (
+export const KaleidoscopeIcon = ({ className = "w-7 h-7" }) => (
   <svg viewBox="0 0 24 24" className={className} fill="none">
     {/* 8 Vibrant Symmetrical Crystal Facets radiating from center (12, 12) */}
     <path d="M12 12 L12 2 L19.07 4.93 Z" fill="#ef4444" stroke="#ffffff" strokeWidth="0.5" />
@@ -64,8 +64,8 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
         </div>
       </div>
 
-      {/* 3 WHOOP-STYLE RING PORTALS */}
-      <div className="grid grid-cols-3 gap-2.5 pt-3">
+      {/* 3 WHOOP-STYLE RING PORTALS WITH LARGER RINGS AND SMALLER CAPTION TEXT */}
+      <div className="grid grid-cols-3 gap-3 pt-4">
         {spaces.map((sp) => {
           const Icon = sp.icon;
           const isActive = activeSpace === sp.id;
@@ -75,24 +75,25 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
               key={sp.id}
               whileTap={{ scale: 0.95 }}
               onClick={() => onSelectSpace(sp.id)}
-              className={`p-3 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-1.5 ${
+              className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-2 ${
                 isActive
                   ? `bg-slate-800 ${sp.borderSolid} shadow-lg ring-2 ring-white/20`
                   : 'bg-slate-950 border-slate-800 hover:border-slate-700'
               }`}
             >
-              {/* Solid Color Ring Indicator */}
+              {/* Larger Solid Color Ring Indicator */}
               <div
-                className="w-10 h-10 rounded-full border-4 flex items-center justify-center overflow-hidden"
+                className="w-14 h-14 rounded-full border-[5px] flex items-center justify-center overflow-hidden transition-all shadow-inner"
                 style={{
                   borderColor: sp.color,
                   backgroundColor: isActive ? sp.color : 'transparent',
                 }}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : sp.textSolid}`} />
+                <Icon className={`w-7 h-7 ${isActive ? 'text-white' : sp.textSolid}`} />
               </div>
 
-              <h4 className="text-xs font-serif font-bold text-white">
+              {/* Smaller Caption Text */}
+              <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-300">
                 {sp.title}
               </h4>
             </motion.div>
