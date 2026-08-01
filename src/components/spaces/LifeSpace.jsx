@@ -15,6 +15,34 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
     { id: 'g4', title: 'Testament beim Notar hinterlegen', done: false, category: 'Erbschaft' },
   ]);
 
+  // Interactive Life Stage Themes Content
+  const [lifeThemes, setLifeThemes] = useState([
+    {
+      id: 't1',
+      stage: 'Kindheit & Aufwachsen (0–18 Jahre)',
+      title: 'Werte vermitteln & Meilensteine sichern',
+      summary: 'Wie Eltern und Großeltern Erinnerungen und Werte von klein auf verankern.',
+    },
+    {
+      id: 't2',
+      stage: 'Wilde Jahre & Orientierung (18–30 Jahre)',
+      title: 'Selbstfindung, Abenteuer & Berufsstart',
+      summary: 'Eigenverantwortung übernehmen, Reisetagebücher führen und erste Zukunftsentscheidungen treffen.',
+    },
+    {
+      id: 't3',
+      stage: 'Familiengründung & Reifezeit (30–50 Jahre)',
+      title: 'Absicherung & Bau von Zeitkapseln',
+      summary: 'Vorsorge treffen, Kinder in das Leben begleiten und die Werteschrift verfassen.',
+    },
+    {
+      id: 't4',
+      stage: 'Vermächtnis & Lebensabschied (50+ Jahre)',
+      title: 'Würdevolle Lebensabschluss-Planung',
+      summary: 'Abschiedswünsche festlegen, Angehörige entlasten und Zeitkapseln vertrauensvoll übergeben.',
+    },
+  ]);
+
   // Interactive Financial & Funeral Provision Planner
   const [provisionPlan, setProvisionPlan] = useState({
     bestattungsBudget: 7500,
@@ -68,7 +96,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Lebensphasen und Themen</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Informationen & Inspirationen</p>
+                <p className="text-[11px] text-slate-500 font-serif">{lifeThemes.length} Themen-Leitfäden</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -155,6 +183,28 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
+
+          {/* SUB-VIEW 1: LEBENSPHASEN UND THEMEN */}
+          {subView === 'themes' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
+              <h3 className="font-serif font-bold text-base text-slate-900 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-blue-600" />
+                <span>Lebensphasen & Themen ({lifeThemes.length})</span>
+              </h3>
+
+              <div className="space-y-3">
+                {lifeThemes.map((theme) => (
+                  <div key={theme.id} className="p-3.5 bg-blue-50/60 rounded-2xl border border-blue-200 space-y-1.5">
+                    <span className="text-[10px] font-mono font-bold text-blue-800 bg-blue-100 px-2 py-0.5 rounded-md">
+                      {theme.stage}
+                    </span>
+                    <h4 className="font-serif font-bold text-sm text-slate-900">{theme.title}</h4>
+                    <p className="text-xs text-slate-600 font-serif leading-relaxed">{theme.summary}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* SUB-VIEW 2: LEITFRAGEN & LEITFÄDEN (INTERACTIVE CHECKLIST) */}
           {subView === 'guidelines' && (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2, Plus, Trash2, Edit3 } from 'lucide-react';
+import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2, Plus, Trash2, Edit3, Quote } from 'lucide-react';
 import { WerteKompass } from '../WerteKompass';
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
@@ -36,9 +36,19 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
     'Holzschnitzen & Handwerkskunst',
     'Gärtnern & Anbau eigener Apfelsorten',
   ]);
-  const [newItemText, setNewItemText] = useState('');
+  const [newInterest, setNewInterest] = useState('');
+  const [newHobby, setNewHobby] = useState('');
 
-  // 4. Bucket List (Interactive Toggle & Add)
+  // 4. Inspiration (Seelische Impulse & Zitate)
+  const [inspirations, setInspirations] = useState([
+    { id: 'i1', quote: 'Nicht wie lange, sondern wie gut du gelebt hast, ist die Hauptsache.', author: 'Seneca' },
+    { id: 'i2', quote: 'Die besten Dinge im Leben sind nicht die, die man für Geld bekommt.', author: 'Albert Einstein' },
+    { id: 'i3', quote: 'Vergiss nie: Das Leben ist jetzt.', author: 'Persönlicher Impuls' },
+  ]);
+  const [newQuoteText, setNewQuoteText] = useState('');
+  const [newQuoteAuthor, setNewQuoteAuthor] = useState('');
+
+  // 5. Bucket List (Interactive Toggle & Add)
   const [bucketList, setBucketList] = useState([
     { id: 'b1', text: 'Alpenüberquerung zu Fuß von Oberstdorf nach Meran', category: 'Ich', done: true },
     { id: 'b2', text: 'Gemeinsames Familien-Erinnerungsbuch veröffentlichen', category: 'Familie', done: false },
@@ -46,20 +56,45 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
   ]);
   const [newBucketText, setNewBucketText] = useState('');
 
-  // 5. Mein Weg
+  // 6. Mein Weg
   const [myWay, setMyWay] = useState({
     strengths: 'Besonnenheit, Ausdauer & tiefes Zuhören',
     vision: 'Ein Leben in Dankbarkeit, innerer Ruhe und bleibenden Werten',
     notMyWay: 'Rastloser Konsum, oberflächlicher Lärm und Fremdbestimmung',
   });
 
-  // 6. Meine Gedanken (Gedanken-Stream)
+  // 7. Meine Gedanken (Gedanken-Stream)
   const [reflections, setReflections] = useState([
     { id: 'r1', date: '2026-07-28', text: 'Heute verstanden: Stille ist nicht die Abwesenheit von Geräuschen, sondern die Anwesenheit von innerem Frieden.' },
   ]);
   const [newReflectionText, setNewReflectionText] = useState('');
 
   // Handlers
+  const handleAddInterest = (e) => {
+    e.preventDefault();
+    if (!newInterest.trim()) return;
+    setInterests([...interests, newInterest.trim()]);
+    setNewInterest('');
+  };
+
+  const handleAddHobby = (e) => {
+    e.preventDefault();
+    if (!newHobby.trim()) return;
+    setHobbies([...hobbies, newHobby.trim()]);
+    setNewHobby('');
+  };
+
+  const handleAddInspiration = (e) => {
+    e.preventDefault();
+    if (!newQuoteText.trim()) return;
+    setInspirations([
+      ...inspirations,
+      { id: `i-${Date.now()}`, quote: newQuoteText.trim(), author: newQuoteAuthor.trim() || 'Eigener Gedanken-Impuls' },
+    ]);
+    setNewQuoteText('');
+    setNewQuoteAuthor('');
+  };
+
   const handleToggleBucket = (id) => {
     setBucketList(bucketList.map((item) => (item.id === id ? { ...item, done: !item.done } : item)));
   };
@@ -204,7 +239,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Inspiration</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Seelische Impulse & Zitate</p>
+                <p className="text-[11px] text-slate-500 font-serif">{inspirations.length} seelische Impulse & Zitate</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -308,6 +343,98 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
+
+          {/* SUB-VIEW: INSPIRATION (SEELISCHE IMPULSE) */}
+          {subView === 'inspiration' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
+              <div className="flex items-center justify-between border-b pb-2">
+                <h3 className="font-serif font-bold text-base text-slate-900 flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-purple-600" />
+                  <span>Meine Inspiration & Impulse ({inspirations.length})</span>
+                </h3>
+              </div>
+
+              <form onSubmit={handleAddInspiration} className="space-y-2">
+                <textarea
+                  rows="2"
+                  placeholder="Gedanken-Impuls oder Zitat verfassen..."
+                  value={newQuoteText}
+                  onChange={(e) => setNewQuoteText(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-serif"
+                  required
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Urheber / Autor (optional)"
+                    value={newQuoteAuthor}
+                    onChange={(e) => setNewQuoteAuthor(e.target.value)}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+                  />
+                  <button type="submit" className="px-4 py-1.5 bg-purple-600 text-white font-bold rounded-xl text-xs flex-shrink-0 cursor-pointer">
+                    Speichern
+                  </button>
+                </div>
+              </form>
+
+              <div className="space-y-3">
+                {inspirations.map((item) => (
+                  <div key={item.id} className="p-3.5 bg-purple-50 rounded-2xl border border-purple-200 space-y-1">
+                    <Quote className="w-4 h-4 text-purple-500" />
+                    <p className="font-serif italic text-slate-900 text-xs">„{item.quote}“</p>
+                    <span className="text-[10px] font-bold text-purple-800 block text-right">— {item.author}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* SUB-VIEW: INTERESSEN & HOBBYS */}
+          {subView === 'interests-hobbies' && (
+            <div className="space-y-3 text-xs font-serif">
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 font-sans">
+                <h4 className="font-bold text-slate-900 text-sm">Geistige Interessen</h4>
+                <form onSubmit={handleAddInterest} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Neues Interesse hinzufügen..."
+                    value={newInterest}
+                    onChange={(e) => setNewInterest(e.target.value)}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+                  />
+                  <button type="submit" className="px-3 py-1.5 bg-teal-600 text-white font-bold rounded-xl text-xs flex-shrink-0">
+                    Hinzufügen
+                  </button>
+                </form>
+                <ul className="list-disc list-inside space-y-1 text-slate-700 font-serif">
+                  {interests.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 font-sans">
+                <h4 className="font-bold text-slate-900 text-sm">Körperliche Hobbys</h4>
+                <form onSubmit={handleAddHobby} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Neues Hobby hinzufügen..."
+                    value={newHobby}
+                    onChange={(e) => setNewHobby(e.target.value)}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+                  />
+                  <button type="submit" className="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-xl text-xs flex-shrink-0">
+                    Hinzufügen
+                  </button>
+                </form>
+                <ul className="list-disc list-inside space-y-1 text-slate-700 font-serif">
+                  {hobbies.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
 
           {/* SUB-VIEW: PROFIL */}
           {subView === 'profile' && (
@@ -421,7 +548,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             </div>
           )}
 
-          {/* SUB-VIEW: WÜNSCHE & BUCKET LIST (INTERACTIVE TOGGLE & ADD) */}
+          {/* SUB-VIEW: WÜNSCHE & BUCKET LIST */}
           {subView === 'bucketlist' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
               <h3 className="font-serif font-bold text-base text-slate-900">Meine Wünsche & Bucket List ({bucketList.length})</h3>
@@ -459,7 +586,17 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             </div>
           )}
 
-          {/* SUB-VIEW: GEDANKEN-STREAM (INTERACTIVE) */}
+          {/* SUB-VIEW: MEIN WEG */}
+          {subView === 'myway' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs font-serif">
+              <h3 className="font-serif font-bold text-base text-slate-900 font-sans">Mein Weg (Sinn & Vision)</h3>
+              <p><strong>Stärken:</strong> {myWay.strengths}</p>
+              <p><strong>Vision:</strong> {myWay.vision}</p>
+              <p><strong>Was ist NICHT mein Weg:</strong> {myWay.notMyWay}</p>
+            </div>
+          )}
+
+          {/* SUB-VIEW: GEDANKEN-STREAM */}
           {subView === 'reflections' && (
             <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
               <h3 className="font-serif font-bold text-base text-slate-900">Meine Gedanken (Unsortierter Stream)</h3>
