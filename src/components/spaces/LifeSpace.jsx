@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, BookOpen, HelpCircle, Calendar, ShieldCheck, FileText, Building2, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Target, BookOpen, HelpCircle, Calendar, ShieldCheck, FileText, Building2, ChevronRight, ArrowLeft, CheckCircle2, DollarSign, Sparkles } from 'lucide-react';
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
 
 export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
 
+  // Interactive Guidelines & Checklists
   const [guidelines, setGuidelines] = useState([
-    { title: 'Leitfaden: Vorsorgevollmacht & Betreuungsverfügung', type: 'Instrument', readTime: '5 Min' },
-    { title: 'Leitfragen: Was ist meinen Angehörigen im Ernstfall wichtig?', type: 'Leitfragen', readTime: '8 Min' },
-    { title: 'Leitfaden: Digitaler Nachlass & Cloud-Zugänge', type: 'Instrument', readTime: '6 Min' },
+    { id: 'g1', title: 'Patientenverfügung im Datentresor aktualisieren', done: true, category: 'Medizinisch' },
+    { id: 'g2', title: 'Vorsorgevollmacht & Betreuungsverfügung unterzeichnen', done: true, category: 'Rechtlich' },
+    { id: 'g3', title: 'Digitaler Nachlass: Passwort-Zugänge regeln', done: false, category: 'Digital' },
+    { id: 'g4', title: 'Testament beim Notar hinterlegen', done: false, category: 'Erbschaft' },
   ]);
+
+  // Interactive Financial & Funeral Provision Planner
+  const [provisionPlan, setProvisionPlan] = useState({
+    bestattungsBudget: 7500,
+    sparbuchHinterlegt: true,
+    versicherungsPolice: 'Vorsorge-Police Nr. 884-219',
+    notarKontakt: 'Kanzlei Dr. Hoffmann (Stuttgart)',
+  });
+
+  const handleToggleGuideline = (id) => {
+    setGuidelines(guidelines.map((g) => (g.id === id ? { ...g, done: !g.done } : g)));
+  };
 
   return (
     <div className="w-full space-y-4 select-none pb-12">
@@ -20,7 +34,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
       <div className="p-4 bg-blue-600 text-white rounded-3xl border-2 border-blue-700 shadow-md">
         <button
           onClick={onGoHome}
-          className="flex items-center gap-1 text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-xl mb-3 transition-all"
+          className="flex items-center gap-1 text-xs font-bold bg-blue-700 hover:bg-blue-800 text-white px-3 py-1 rounded-xl mb-3 transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Zurück zur Startseite</span>
@@ -35,9 +49,6 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               Life Space
             </span>
             <h2 className="text-xl font-serif font-bold">Life Space</h2>
-            <p className="text-xs text-blue-100 font-serif">
-              Management & Planung • Getting the essentials straight
-            </p>
           </div>
         </div>
       </div>
@@ -74,7 +85,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Leitfragen und Leitfäden</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Instrumente & Vorsorge-Leitfäden</p>
+                <p className="text-[11px] text-slate-500 font-serif">{guidelines.filter(g => g.done).length}/{guidelines.length} Vorsorge-Checklisten erledigt</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -91,7 +102,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Lebensplanung</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Finanzen & Lebensabschied-Vorsorge</p>
+                <p className="text-[11px] text-slate-500 font-serif">Finanzen & Vorsorgebudget</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -108,7 +119,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Dokumente und Vorsorge</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Dokumenten-Safe, Patientenverfügung & Erbschaft</p>
+                <p className="text-[11px] text-slate-500 font-serif">Dokumenten-Safe & Erbschaft</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -125,7 +136,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Kuratierte Partnerangebote</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Abschiedsbegleiter & Notare</p>
+                <p className="text-[11px] text-slate-500 font-serif">Notare & Vorsorgeexperten</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -139,32 +150,62 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
         <div className="space-y-3">
           <button
             onClick={() => setSubView('overview')}
-            className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl"
+            className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
 
+          {/* SUB-VIEW 2: LEITFRAGEN & LEITFÄDEN (INTERACTIVE CHECKLIST) */}
           {subView === 'guidelines' && (
-            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
-              <h3 className="font-serif font-bold text-base text-slate-900">Leitfragen & Leitfäden</h3>
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
+              <h3 className="font-serif font-bold text-base text-slate-900">Leitfragen & Vorsorge-Checklisten</h3>
               <div className="space-y-2">
-                {guidelines.map((g, i) => (
-                  <div key={i} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-                    <span className="font-bold text-slate-900">{g.title}</span>
-                    <span className="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md font-bold">{g.readTime}</span>
+                {guidelines.map((g) => (
+                  <div
+                    key={g.id}
+                    onClick={() => handleToggleGuideline(g.id)}
+                    className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between cursor-pointer hover:border-blue-300"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className={`w-4 h-4 ${g.done ? 'text-emerald-600' : 'text-slate-300'}`} />
+                      <span className={g.done ? 'line-through text-slate-400' : 'font-bold text-slate-900'}>{g.title}</span>
+                    </div>
+                    <span className="text-[10px] font-mono bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md font-bold">{g.category}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {subView === 'documents' && (
-            <SecurityVault />
+          {/* SUB-VIEW 3: LEBENSPLANUNG (INTERACTIVE BUDGET & FINANCIAL PROVISION) */}
+          {subView === 'planning' && (
+            <div className="space-y-4">
+              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
+                <h3 className="font-serif font-bold text-base text-slate-900">Finanzielle Lebensplanung & Vorsorge</h3>
+                <div className="space-y-2 font-serif text-slate-700">
+                  <p><strong>Geplantes Abschieds-Budget:</strong> {provisionPlan.bestattungsBudget.toLocaleString('de-DE')} €</p>
+                  <p><strong>Zweckgebundenes Sparbuch hinterlegt:</strong> {provisionPlan.sparbuchHinterlegt ? 'Ja (Im Datentresor)' : 'Nein'}</p>
+                  <p><strong>Versicherungs-Police:</strong> {provisionPlan.versicherungsPolice}</p>
+                  <p><strong>Vertrauter Notar:</strong> {provisionPlan.notarKontakt}</p>
+                </div>
+              </div>
+
+              <DasLetzteKapitel letztesKapitel={letztesKapitel} onUpdateLetztesKapitel={onUpdateLetztesKapitel} />
+            </div>
           )}
 
-          {subView === 'planning' && (
-            <DasLetzteKapitel letztesKapitel={letztesKapitel} onUpdateLetztesKapitel={onUpdateLetztesKapitel} />
+          {subView === 'documents' && <SecurityVault />}
+
+          {subView === 'partner' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
+              <h3 className="font-serif font-bold text-base text-slate-900 flex items-center gap-2">
+                <Building2 className="w-5 h-5 text-teal-600" />
+                <span>Kanzlei Dr. Hoffmann & Partner</span>
+              </h3>
+              <p className="text-slate-600 font-serif">Rechtssichere Erstellung von Patientenverfügungen, Vorsorgevollmachten und Testamenten.</p>
+              <a href="mailto:vorsorge@hoffmann-recht.de" className="inline-block px-3 py-1 bg-[#10b981] text-white font-bold rounded-lg text-[11px]">Kontakt aufnehmen</a>
+            </div>
           )}
         </div>
       )}

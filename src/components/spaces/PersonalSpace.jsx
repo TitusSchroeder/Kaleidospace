@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2 } from 'lucide-react';
+import { Compass, User, Key, Scroll, BookOpen, Activity, Sparkles, Target, MapPin, Feather, Brain, ShieldCheck, Building2, ChevronRight, ArrowLeft, ExternalLink, Lock, CheckCircle2, Plus, Trash2, Edit3 } from 'lucide-react';
 import { WerteKompass } from '../WerteKompass';
 import { SecurityVault } from '../SecurityVault';
 import { DasLetzteKapitel } from '../DasLetzteKapitel';
@@ -8,46 +8,92 @@ import { DasLetzteKapitel } from '../DasLetzteKapitel';
 export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKapitel, onUpdateLetztesKapitel, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
 
-  // Interactive Sub-Module State Data
+  // 1. Mein Profil (Interactive Edit)
   const [profile, setProfile] = useState({
     name: 'Titus Schröder',
     contact: 'titus@schroeder-familie.de',
     health: 'Blutgruppe A+, Keine chronischen Vorerkrankungen',
     emergency: 'Clara Schröder (Tochter, +49 170 1234567)',
   });
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
+  // 2. Passwörter & 1Password
   const [passwords, setPasswords] = useState([
     { id: 'p1', service: 'Master Tresor PIN', hint: 'Geschützt in 1Password' },
     { id: 'p2', service: 'Digitale Zeitkapsel-Schlüssel', hint: 'Abschiedsbegleiter Dr. Weber' },
   ]);
+  const [newPassService, setNewPassService] = useState('');
+  const [newPassHint, setNewPassHint] = useState('');
 
+  // 3. Interessen & Hobbys
   const [interests, setInterests] = useState([
     'Philosophie der Stoa & Entschleunigung',
     'Geschichte der modernen Architektur',
     'Klassische Musik & Konzertabende',
   ]);
-
   const [hobbies, setHobbies] = useState([
     'Wandern im Schwarzwald & Bergtouren',
     'Holzschnitzen & Handwerkskunst',
     'Gärtnern & Anbau eigener Apfelsorten',
   ]);
+  const [newItemText, setNewItemText] = useState('');
 
+  // 4. Bucket List (Interactive Toggle & Add)
   const [bucketList, setBucketList] = useState([
     { id: 'b1', text: 'Alpenüberquerung zu Fuß von Oberstdorf nach Meran', category: 'Ich', done: true },
     { id: 'b2', text: 'Gemeinsames Familien-Erinnerungsbuch veröffentlichen', category: 'Familie', done: false },
     { id: 'b3', text: 'Stiftung für regionalen Naturschutz gründen', category: 'Beruf', done: false },
   ]);
+  const [newBucketText, setNewBucketText] = useState('');
 
+  // 5. Mein Weg
   const [myWay, setMyWay] = useState({
     strengths: 'Besonnenheit, Ausdauer & tiefes Zuhören',
     vision: 'Ein Leben in Dankbarkeit, innerer Ruhe und bleibenden Werten',
     notMyWay: 'Rastloser Konsum, oberflächlicher Lärm und Fremdbestimmung',
   });
 
+  // 6. Meine Gedanken (Gedanken-Stream)
   const [reflections, setReflections] = useState([
-    { id: 'r1', date: '2026-07-28', text: 'Heute verstanden: Stille ist nicht die Abwechslung von Geräuschen, sondern die Anwesenheit von innerem Frieden.' },
+    { id: 'r1', date: '2026-07-28', text: 'Heute verstanden: Stille ist nicht die Abwesenheit von Geräuschen, sondern die Anwesenheit von innerem Frieden.' },
   ]);
+  const [newReflectionText, setNewReflectionText] = useState('');
+
+  // Handlers
+  const handleToggleBucket = (id) => {
+    setBucketList(bucketList.map((item) => (item.id === id ? { ...item, done: !item.done } : item)));
+  };
+
+  const handleAddBucketItem = (e) => {
+    e.preventDefault();
+    if (!newBucketText.trim()) return;
+    setBucketList([
+      ...bucketList,
+      { id: `b-${Date.now()}`, text: newBucketText.trim(), category: 'Ich', done: false },
+    ]);
+    setNewBucketText('');
+  };
+
+  const handleAddPasswordHint = (e) => {
+    e.preventDefault();
+    if (!newPassService.trim()) return;
+    setPasswords([
+      ...passwords,
+      { id: `p-${Date.now()}`, service: newPassService.trim(), hint: newPassHint.trim() || 'Hinterlegt' },
+    ]);
+    setNewPassService('');
+    setNewPassHint('');
+  };
+
+  const handleAddReflection = (e) => {
+    e.preventDefault();
+    if (!newReflectionText.trim()) return;
+    setReflections([
+      { id: `r-${Date.now()}`, date: new Date().toISOString().slice(0, 10), text: newReflectionText.trim() },
+      ...reflections,
+    ]);
+    setNewReflectionText('');
+  };
 
   return (
     <div className="w-full space-y-4 select-none pb-12">
@@ -56,7 +102,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
       <div className="p-4 bg-emerald-600 text-white rounded-3xl border-2 border-emerald-700 shadow-md">
         <button
           onClick={onGoHome}
-          className="flex items-center gap-1 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1 rounded-xl mb-3 transition-all"
+          className="flex items-center gap-1 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1 rounded-xl mb-3 transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Zurück zur Startseite</span>
@@ -71,9 +117,6 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               Personal Space
             </span>
             <h2 className="text-xl font-serif font-bold">Personal Space</h2>
-            <p className="text-xs text-emerald-100 font-serif">
-              Das Leben bewusst leben • Living life mindfully
-            </p>
           </div>
         </div>
       </div>
@@ -93,13 +136,13 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Mein Profil</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Kontaktdaten, Gesundheit & Notfallkontakte</p>
+                <p className="text-[11px] text-slate-500 font-serif">Kontaktdaten, Gesundheit & Notfall</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
           </div>
 
-          {/* MODULE 2: PASSWÖRTER (WITH 1PASSWORD AFFILIATE) */}
+          {/* MODULE 2: PASSWÖRTER */}
           <div
             onClick={() => setSubView('passwords')}
             className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-emerald-500 transition-all cursor-pointer flex items-center justify-between"
@@ -110,7 +153,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Passwörter</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Inkl. 1Password Partner-Empfehlung</p>
+                <p className="text-[11px] text-slate-500 font-serif">Passwort-Hinweise & 1Password Partner</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -127,7 +170,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Werte (Werteschrift)</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Werte, Überzeugungen & Prinzipien</p>
+                <p className="text-[11px] text-slate-500 font-serif">{werte.length} verankerte Prinzipien</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -144,7 +187,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Interessen & Hobbys</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Geistige & körperliche Entfaltung</p>
+                <p className="text-[11px] text-slate-500 font-serif">Geistige & körperliche Aktivitäten</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -178,7 +221,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Wünsche / Träume / Bucket List</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Ich, Familie & Beruf</p>
+                <p className="text-[11px] text-slate-500 font-serif">{bucketList.length} Ziele & Wünsche</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -212,7 +255,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Persönlicher Abschied</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Abschiedsbegleiter, Abschiedshaus, Wünsche</p>
+                <p className="text-[11px] text-slate-500 font-serif">Abschiedsbegleiter & Wünsche</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -229,7 +272,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
               </div>
               <div>
                 <h3 className="font-serif font-bold text-sm text-slate-900">Meine Gedanken</h3>
-                <p className="text-[11px] text-slate-500 font-serif">Unsortierte Notizen & Gedanken-Stream</p>
+                <p className="text-[11px] text-slate-500 font-serif">{reflections.length} Gedanken-Stream Notizen</p>
               </div>
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -260,17 +303,70 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
         <div className="space-y-3">
           <button
             onClick={() => setSubView('overview')}
-            className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl"
+            className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-200 px-3 py-1.5 rounded-xl cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
 
-          {/* SUB-VIEW: PASSWÖRTER MIT 1PASSWORD AFFILIATE */}
+          {/* SUB-VIEW: PROFIL */}
+          {subView === 'profile' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
+              <div className="flex items-center justify-between border-b pb-2">
+                <h3 className="font-serif font-bold text-base text-slate-900">Mein Profil</h3>
+                <button
+                  onClick={() => setIsEditingProfile(!isEditingProfile)}
+                  className="px-3 py-1 bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-1"
+                >
+                  <Edit3 className="w-3.5 h-3.5" />
+                  <span>{isEditingProfile ? 'Fertig' : 'Bearbeiten'}</span>
+                </button>
+              </div>
+
+              {isEditingProfile ? (
+                <div className="space-y-2">
+                  <div>
+                    <label className="block font-bold text-slate-700 text-[10px]">Name:</label>
+                    <input
+                      type="text"
+                      value={profile.name}
+                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-slate-700 text-[10px]">Kontakt-E-Mail:</label>
+                    <input
+                      type="email"
+                      value={profile.contact}
+                      onChange={(e) => setProfile({ ...profile, contact: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-slate-700 text-[10px]">Gesundheitsdaten:</label>
+                    <input
+                      type="text"
+                      value={profile.health}
+                      onChange={(e) => setProfile({ ...profile, health: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 font-serif">
+                  <p><strong>Name:</strong> {profile.name}</p>
+                  <p><strong>Kontakt:</strong> {profile.contact}</p>
+                  <p><strong>Gesundheitsdaten:</strong> {profile.health}</p>
+                  <p><strong>Notfallkontakt:</strong> {profile.emergency}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SUB-VIEW: PASSWÖRTER */}
           {subView === 'passwords' && (
             <div className="space-y-4">
-              
-              {/* 1PASSWORD AFFILIATE BANNER */}
               <div className="p-4 rounded-2xl bg-slate-900 text-white border-2 border-blue-500 space-y-3 shadow-md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -283,8 +379,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
                 </div>
 
                 <p className="text-xs text-slate-300 font-serif leading-relaxed">
-                  Für maximale digitale Sicherheit empfehlen wir die Speicherung vertraulicher Passwörter bei unserem Partner <strong>1Password</strong>.
-                  Speichern Sie Passwörter, Notfall-PINs und digitale Nachlass-Schlüssel Ende-zu-Ende verschlüsselt.
+                  Für maximale Sicherheit empfehlen wir die Speicherung vertraulicher Passwörter bei unserem Partner <strong>1Password</strong>.
                 </p>
 
                 <a
@@ -298,9 +393,22 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
                 </a>
               </div>
 
-              {/* LOCAL HINTS LIST */}
               <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
                 <h4 className="font-serif font-bold text-sm text-slate-900">Passwort-Hinweise in KALEIDOspace</h4>
+
+                <form onSubmit={handleAddPasswordHint} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Dienst (z.B. Tresor)"
+                    value={newPassService}
+                    onChange={(e) => setNewPassService(e.target.value)}
+                    className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs"
+                  />
+                  <button type="submit" className="px-3 py-1.5 bg-slate-900 text-white font-bold rounded-lg text-xs flex-shrink-0">
+                    Hinzufügen
+                  </button>
+                </form>
+
                 <div className="space-y-2">
                   {passwords.map((p) => (
                     <div key={p.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
@@ -310,63 +418,38 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
                   ))}
                 </div>
               </div>
-
             </div>
           )}
 
-          {subView === 'profile' && (
-            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
-              <h3 className="font-serif font-bold text-base text-slate-900">Mein Profil</h3>
-              <div className="space-y-2 font-serif">
-                <p><strong>Name:</strong> {profile.name}</p>
-                <p><strong>Kontakt:</strong> {profile.contact}</p>
-                <p><strong>Gesundheitsdaten:</strong> {profile.health}</p>
-                <p><strong>Notfallkontakt:</strong> {profile.emergency}</p>
-              </div>
-            </div>
-          )}
-
-          {subView === 'values' && (
-            <WerteKompass werte={werte} onAddWerte={onAddWerte} onDeleteWerte={onDeleteWerte} />
-          )}
-
-          {subView === 'farewell' && (
-            <DasLetzteKapitel letztesKapitel={letztesKapitel} onUpdateLetztesKapitel={onUpdateLetztesKapitel} />
-          )}
-
-          {subView === 'vault' && (
-            <SecurityVault />
-          )}
-
-          {subView === 'interests-hobbies' && (
-            <div className="space-y-3 text-xs font-serif">
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-2">
-                <h4 className="font-bold font-sans text-slate-900">Geistige Interessen</h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-700">
-                  {interests.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-2">
-                <h4 className="font-bold font-sans text-slate-900">Körperliche Hobbys</h4>
-                <ul className="list-disc list-inside space-y-1 text-slate-700">
-                  {hobbies.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-
+          {/* SUB-VIEW: WÜNSCHE & BUCKET LIST (INTERACTIVE TOGGLE & ADD) */}
           {subView === 'bucketlist' && (
-            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs">
-              <h3 className="font-serif font-bold text-base text-slate-900">Meine Wünsche & Bucket List</h3>
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
+              <h3 className="font-serif font-bold text-base text-slate-900">Meine Wünsche & Bucket List ({bucketList.length})</h3>
+
+              <form onSubmit={handleAddBucketItem} className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Neues Ziel oder Wunsch verfassen..."
+                  value={newBucketText}
+                  onChange={(e) => setNewBucketText(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+                />
+                <button type="submit" className="px-4 py-2 bg-rose-600 text-white font-bold rounded-xl text-xs flex-shrink-0 cursor-pointer">
+                  Hinzufügen
+                </button>
+              </form>
+
               <div className="space-y-2">
                 {bucketList.map((item) => (
-                  <div key={item.id} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
-                    <span>{item.text} ({item.category})</span>
+                  <div
+                    key={item.id}
+                    onClick={() => handleToggleBucket(item.id)}
+                    className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between cursor-pointer hover:border-rose-300"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className={`w-4 h-4 ${item.done ? 'text-emerald-600' : 'text-slate-300'}`} />
+                      <span className={item.done ? 'line-through text-slate-400' : 'font-bold text-slate-900'}>{item.text}</span>
+                    </div>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${item.done ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>
                       {item.done ? 'Erreicht' : 'Offen'}
                     </span>
@@ -376,26 +459,38 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
             </div>
           )}
 
-          {subView === 'myway' && (
-            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs font-serif">
-              <h3 className="font-serif font-bold text-base text-slate-900 font-sans">Mein Weg (Sinn & Vision)</h3>
-              <p><strong>Stärken:</strong> {myWay.strengths}</p>
-              <p><strong>Vision:</strong> {myWay.vision}</p>
-              <p><strong>Was ist NICHT mein Weg:</strong> {myWay.notMyWay}</p>
+          {/* SUB-VIEW: GEDANKEN-STREAM (INTERACTIVE) */}
+          {subView === 'reflections' && (
+            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-4 text-xs">
+              <h3 className="font-serif font-bold text-base text-slate-900">Meine Gedanken (Unsortierter Stream)</h3>
+
+              <form onSubmit={handleAddReflection} className="space-y-2">
+                <textarea
+                  rows="3"
+                  placeholder="Welcher Gedanke bewegt Sie gerade?"
+                  value={newReflectionText}
+                  onChange={(e) => setNewReflectionText(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-serif"
+                />
+                <button type="submit" className="w-full py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs cursor-pointer">
+                  Gedanken festhalten
+                </button>
+              </form>
+
+              <div className="space-y-2">
+                {reflections.map((r) => (
+                  <div key={r.id} className="p-3 bg-amber-50 rounded-xl border border-amber-200 font-serif">
+                    <span className="text-[10px] font-mono text-amber-800 block mb-1 font-sans">{r.date}</span>
+                    <p className="text-slate-800">{r.text}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
-          {subView === 'reflections' && (
-            <div className="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 text-xs font-serif">
-              <h3 className="font-serif font-bold text-base text-slate-900 font-sans">Meine Gedanken (Gedanken-Stream)</h3>
-              {reflections.map((r) => (
-                <div key={r.id} className="p-3 bg-amber-50 rounded-xl border border-amber-200">
-                  <span className="text-[10px] font-mono text-amber-800 block mb-1">{r.date}</span>
-                  <p className="text-slate-800">{r.text}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          {subView === 'values' && <WerteKompass werte={werte} onAddWerte={onAddWerte} onDeleteWerte={onDeleteWerte} />}
+          {subView === 'farewell' && <DasLetzteKapitel letztesKapitel={letztesKapitel} onUpdateLetztesKapitel={onUpdateLetztesKapitel} />}
+          {subView === 'vault' && <SecurityVault />}
         </div>
       )}
 
