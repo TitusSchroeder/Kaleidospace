@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getInitialState, saveState } from './utils/storage';
-import { SpaceRingHeader } from './components/SpaceRingHeader';
+import { SpaceRingHeader, MultiPhasePieIcon } from './components/SpaceRingHeader';
 import { ExperienceSpace } from './components/spaces/ExperienceSpace';
 import { PersonalSpace } from './components/spaces/PersonalSpace';
 import { LifeSpace } from './components/spaces/LifeSpace';
 import { Lifeloop } from './components/Lifeloop';
 import { IntentionalCreator } from './components/IntentionalCreator';
-import { PieChart, Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck } from 'lucide-react';
+import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck } from 'lucide-react';
 
 export function App() {
   const [state, setState] = useState(getInitialState);
@@ -134,7 +134,7 @@ export function App() {
                     className="p-4 bg-red-50 rounded-2xl border border-red-200 flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <PieChart className="w-5 h-5 text-red-600" />
+                      <MultiPhasePieIcon className="w-5 h-5" />
                       <div>
                         <span className="font-bold text-xs text-slate-900 block">Experience Space</span>
                         <span className="text-[10px] text-slate-500 font-mono">{state.memories.length} gespeicherte Momente</span>

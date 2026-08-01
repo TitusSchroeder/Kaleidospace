@@ -1,6 +1,22 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { PieChart, Fingerprint, Target } from 'lucide-react';
+import { Fingerprint, Target } from 'lucide-react';
+
+// Custom multi-phase segmented pie icon displaying all 5 colored life phase slices
+export const MultiPhasePieIcon = ({ className = "w-4 h-4" }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" strokeWidth="1.5">
+    {/* Phase 1: Red (Kindheit) */}
+    <path d="M12 12 L12 2 A10 10 0 0 1 21.5 8.5 Z" fill="#ef4444" stroke="#ffffff" />
+    {/* Phase 2: Amber (Wilde Jahre) */}
+    <path d="M12 12 L21.5 8.5 A10 10 0 0 1 18 20 Z" fill="#f59e0b" stroke="#ffffff" />
+    {/* Phase 3: Emerald (Reifezeit) */}
+    <path d="M12 12 L18 20 A10 10 0 0 1 6 20 Z" fill="#10b981" stroke="#ffffff" />
+    {/* Phase 4: Blue (Erfüllung) */}
+    <path d="M12 12 L6 20 A10 10 0 0 1 2.5 8.5 Z" fill="#3b82f6" stroke="#ffffff" />
+    {/* Phase 5: Purple (Vermächtnis) */}
+    <path d="M12 12 L2.5 8.5 A10 10 0 0 1 12 2 Z" fill="#8b5cf6" stroke="#ffffff" />
+  </svg>
+);
 
 export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
   const spaces = [
@@ -10,7 +26,7 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
       color: '#dc2626',
       borderSolid: 'border-red-600',
       textSolid: 'text-red-600',
-      icon: PieChart,
+      icon: MultiPhasePieIcon,
     },
     {
       id: 'personal',
@@ -64,13 +80,13 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
             >
               {/* Solid Color Ring Indicator */}
               <div
-                className="w-10 h-10 rounded-full border-4 flex items-center justify-center"
+                className="w-10 h-10 rounded-full border-4 flex items-center justify-center overflow-hidden"
                 style={{
                   borderColor: sp.color,
                   backgroundColor: isActive ? sp.color : 'transparent',
                 }}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : sp.textSolid}`} />
+                <Icon className={`w-5 h-5 ${isActive ? 'text-white' : sp.textSolid}`} />
               </div>
 
               <h4 className="text-xs font-serif font-bold text-white">
