@@ -2,19 +2,22 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Fingerprint, Target } from 'lucide-react';
 
-// Custom multi-phase segmented pie icon displaying all 5 colored life phase slices
-export const MultiPhasePieIcon = ({ className = "w-4 h-4" }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="none" strokeWidth="1.5">
-    {/* Phase 1: Red (Kindheit) */}
-    <path d="M12 12 L12 2 A10 10 0 0 1 21.5 8.5 Z" fill="#ef4444" stroke="#ffffff" />
-    {/* Phase 2: Amber (Wilde Jahre) */}
-    <path d="M12 12 L21.5 8.5 A10 10 0 0 1 18 20 Z" fill="#f59e0b" stroke="#ffffff" />
-    {/* Phase 3: Emerald (Reifezeit) */}
-    <path d="M12 12 L18 20 A10 10 0 0 1 6 20 Z" fill="#10b981" stroke="#ffffff" />
-    {/* Phase 4: Blue (Erfüllung) */}
-    <path d="M12 12 L6 20 A10 10 0 0 1 2.5 8.5 Z" fill="#3b82f6" stroke="#ffffff" />
-    {/* Phase 5: Purple (Vermächtnis) */}
-    <path d="M12 12 L2.5 8.5 A10 10 0 0 1 12 2 Z" fill="#8b5cf6" stroke="#ffffff" />
+// Custom Multi-Faceted Symmetrical Kaleidoskop Icon
+export const KaleidoscopeIcon = ({ className = "w-5 h-5" }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none">
+    {/* 8 Vibrant Symmetrical Crystal Facets radiating from center (12, 12) */}
+    <path d="M12 12 L12 2 L19.07 4.93 Z" fill="#ef4444" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L19.07 4.93 L22 12 Z" fill="#f59e0b" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L22 12 L19.07 19.07 Z" fill="#10b981" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L19.07 19.07 L12 22 Z" fill="#06b6d4" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L12 22 L4.93 19.07 Z" fill="#3b82f6" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L4.93 19.07 L2 12 Z" fill="#8b5cf6" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L2 12 L4.93 4.93 Z" fill="#ec4899" stroke="#ffffff" strokeWidth="0.5" />
+    <path d="M12 12 L4.93 4.93 L12 2 Z" fill="#f43f5e" stroke="#ffffff" strokeWidth="0.5" />
+    {/* Center Lens Sparkle */}
+    <circle cx="12" cy="12" r="2.5" fill="#ffffff" />
+    {/* Outer Boundary Circle */}
+    <circle cx="12" cy="12" r="10" stroke="#ffffff" strokeWidth="1" fill="none" />
   </svg>
 );
 
@@ -26,7 +29,7 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
       color: '#dc2626',
       borderSolid: 'border-red-600',
       textSolid: 'text-red-600',
-      icon: MultiPhasePieIcon,
+      icon: KaleidoscopeIcon,
     },
     {
       id: 'personal',
