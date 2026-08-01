@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare, GitBranch, User } from 'lucide-react';
+import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLeft, Star, Sparkles, Building2, Trash2, CheckCircle2, MessageSquare, GitBranch, User, Clock, CircleDot } from 'lucide-react';
 import { PhaseSchatullen } from '../PhaseSchatullen';
+import { Lifeloop } from '../Lifeloop';
 
-export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onDeleteMemory, onOpenCreator, onGoHome }) => {
+export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onDateChange, onDeleteMemory, onOpenCreator, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
   const [familyTab, setFamilyTab] = useState('tree'); // 'tree' or 'list'
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [activePhaseId, setActivePhaseId] = useState('all');
 
   // Interactive Events List
   const [eventsList, setEventsList] = useState([
@@ -18,13 +20,13 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
   const [newEventDate, setNewEventDate] = useState('');
   const [isAddingEvent, setIsAddingEvent] = useState(false);
 
-  // Interactive Family & Friends List with Generational Metadata for Family Tree
+  // Interactive Family List
   const [friendsList, setFriendsList] = useState([
     {
       id: 'f3',
       name: 'Opa Heinrich',
       role: 'Großvater',
-      gen: 1, // Generation 1 (Großeltern)
+      gen: 1,
       birthYear: '1942',
       thingsToSay: 'Deine Geschichten aus der Werkstatt prägen mich noch heute.',
       questionToAsk: 'Wie hast du damals die ersten Jahre gemeistert?',
@@ -48,7 +50,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
       id: 'f0',
       name: 'Titus (Ich)',
       role: 'Familienoberhaupt',
-      gen: 2, // Generation 2 (Eltern / Ich)
+      gen: 2,
       birthYear: '1976',
       thingsToSay: 'Verantwortung für unsere Werte übernehmen.',
       questionToAsk: 'Was bleibt von meinem Handeln?',
@@ -72,7 +74,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
       id: 'f1',
       name: 'Clara Schröder',
       role: 'Tochter',
-      gen: 3, // Generation 3 (Kinder)
+      gen: 3,
       birthYear: '2008',
       thingsToSay: 'Ich bin stolz auf deinen Mut beim Studium.',
       questionToAsk: 'Wie geht es dir wirklich mit dem Umzug?',
@@ -149,7 +151,6 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
     setFriendsList(friendsList.filter((f) => f.id !== id));
   };
 
-  // Group family members by generation for the Family Tree
   const gen1 = friendsList.filter((f) => f.gen === 1);
   const gen2 = friendsList.filter((f) => f.gen === 2);
   const gen3 = friendsList.filter((f) => f.gen === 3);
@@ -184,6 +185,23 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
       {subView === 'overview' && (
         <div className="space-y-2.5">
           
+          {/* MODULE 0: DER LIFELOOP ORBIT */}
+          <div
+            onClick={() => setSubView('lifeloop')}
+            className="p-4 bg-slate-900 text-white rounded-2xl border-2 border-emerald-500 shadow-md hover:border-emerald-400 transition-all cursor-pointer flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/30">
+                <CircleDot className="w-5 h-5 animate-spin-slow" />
+              </div>
+              <div>
+                <h3 className="font-serif font-bold text-sm text-white">Der Lifeloop Orbit</h3>
+                <p className="text-[11px] text-slate-300 font-serif">Erinnerungskreis & Zeitreise</p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-emerald-400" />
+          </div>
+
           {/* MODULE 1: MOMENTE & ERINNERUNGEN */}
           <div
             onClick={() => setSubView('moments')}
@@ -218,7 +236,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             <ChevronRight className="w-5 h-5 text-slate-400" />
           </div>
 
-          {/* MODULE 3: FAMILIE UND FREUNDE (GRAPHISCHER STAMMBAUM) */}
+          {/* MODULE 3: FAMILIE UND FREUNDE */}
           <div
             onClick={() => setSubView('family')}
             className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-red-500 transition-all cursor-pointer flex items-center justify-between"
@@ -282,6 +300,18 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
+
+          {/* SUB-VIEW 0: LIFELOOP ORBIT */}
+          {subView === 'lifeloop' && (
+            <Lifeloop
+              phases={phases}
+              activePhaseId={activePhaseId}
+              onSelectPhase={setActivePhaseId}
+              memories={memories}
+              simulatedDate={simulatedDate}
+              onDateChange={onDateChange}
+            />
+          )}
 
           {/* SUB-VIEW 1: MOMENTE */}
           {subView === 'moments' && (
@@ -385,7 +415,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                 </div>
               </div>
 
-              {/* TAB 1: GRAPHISCHER STAMMBAUM (VISUAL FAMILY TREE) */}
+              {/* TAB 1: GRAPHISCHER STAMMBAUM */}
               {familyTab === 'tree' && (
                 <div className="space-y-6">
                   <div className="text-center space-y-1">
@@ -397,10 +427,9 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                     </p>
                   </div>
 
-                  {/* GRAPHICAL TREE CONTAINER */}
                   <div className="p-4 bg-slate-900 text-white rounded-3xl space-y-6 border-2 border-emerald-500/30 relative">
                     
-                    {/* GENERATION 1: GROSSELTERN (TOP LEVEL) */}
+                    {/* GENERATION 1: GROSSELTERN */}
                     <div className="space-y-2 text-center">
                       <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
                         Gen 1 • Großeltern & Vorfahren
@@ -426,10 +455,9 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                       </div>
                     </div>
 
-                    {/* CONNECTING VERTICAL LINE 1 */}
                     <div className="w-0.5 h-6 bg-emerald-500/60 mx-auto" />
 
-                    {/* GENERATION 2: ELTERN & ICH (MID LEVEL) */}
+                    {/* GENERATION 2: ELTERN & ICH */}
                     <div className="space-y-2 text-center">
                       <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
                         Gen 2 • Ich & Partner
@@ -455,10 +483,9 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                       </div>
                     </div>
 
-                    {/* CONNECTING VERTICAL LINE 2 */}
                     <div className="w-0.5 h-6 bg-emerald-500/60 mx-auto" />
 
-                    {/* GENERATION 3: KINDER (BOTTOM LEVEL) */}
+                    {/* GENERATION 3: KINDER */}
                     <div className="space-y-2 text-center">
                       <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
                         Gen 3 • Kinder & Nachkommen
@@ -486,7 +513,6 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
 
                   </div>
 
-                  {/* SELECTED PERSON DETAIL CARD IN TREE VIEW */}
                   {selectedPerson && (
                     <div className="p-4 bg-emerald-50 rounded-2xl border-2 border-emerald-300 text-xs space-y-2">
                       <div className="flex items-center justify-between">
@@ -505,7 +531,7 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                 </div>
               )}
 
-              {/* TAB 2: LIST VIEW WITH ADD BUTTON */}
+              {/* TAB 2: LIST VIEW */}
               {familyTab === 'list' && (
                 <div className="space-y-3">
                   <button

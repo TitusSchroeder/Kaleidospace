@@ -4,6 +4,7 @@ import { SpaceRingHeader } from './components/SpaceRingHeader';
 import { ExperienceSpace } from './components/spaces/ExperienceSpace';
 import { PersonalSpace } from './components/spaces/PersonalSpace';
 import { LifeSpace } from './components/spaces/LifeSpace';
+import { Lifeloop } from './components/Lifeloop';
 import { IntentionalCreator } from './components/IntentionalCreator';
 import { Heart, Compass, Target, Plus, Sparkles, Box, Lock, ShieldCheck } from 'lucide-react';
 
@@ -11,6 +12,7 @@ export function App() {
   const [state, setState] = useState(getInitialState);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [activeSpace, setActiveSpace] = useState('home'); // 'home', 'experience', 'personal', 'life'
+  const [activePhaseId, setActivePhaseId] = useState('all');
 
   // Auto save to localStorage when state changes
   useEffect(() => {
@@ -64,6 +66,13 @@ export function App() {
     }));
   };
 
+  const handleDateChange = (newDate) => {
+    setState((prev) => ({
+      ...prev,
+      simulatedDate: newDate,
+    }));
+  };
+
   return (
     <div className="w-full min-h-screen bg-slate-900 flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans">
       
@@ -82,7 +91,7 @@ export function App() {
           {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW — NO DUPLICATE CARDS! */}
+            {/* HOMEPAGE VIEW */}
             {activeSpace === 'home' && (
               <div className="space-y-4 select-none">
                 
@@ -94,16 +103,28 @@ export function App() {
                   </div>
 
                   <p className="text-xs text-slate-600 font-serif leading-relaxed">
-                    Wählen Sie oben einen der 3 Räume (<strong>Experience</strong>, <strong>Personal</strong> oder <strong>Life</strong>), um Ihre Momente, Werte und Vorsorge zu verwalten.
+                    Wählen Sie oben einen Raum (<strong>Experience</strong>, <strong>Personal</strong> oder <strong>Life</strong>) oder erkunden Sie Ihren <strong>Lifeloop</strong>.
                   </p>
 
                   <button
                     onClick={() => setIsCreatorOpen(true)}
-                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                   >
                     <Plus className="w-4 h-4 text-emerald-400" />
                     <span>Erinnerung oder Zeitkapsel anlegen</span>
                   </button>
+                </div>
+
+                {/* LIFELOOP ORBIT ON HOMEPAGE */}
+                <div className="w-full">
+                  <Lifeloop
+                    phases={state.phases}
+                    activePhaseId={activePhaseId}
+                    onSelectPhase={setActivePhaseId}
+                    memories={state.memories}
+                    simulatedDate={state.simulatedDate}
+                    onDateChange={handleDateChange}
+                  />
                 </div>
 
                 {/* OVERVIEW STATS STACKED VERTICALLY */}
@@ -157,6 +178,7 @@ export function App() {
                 memories={state.memories}
                 phases={state.phases}
                 simulatedDate={state.simulatedDate}
+                onDateChange={handleDateChange}
                 onDeleteMemory={handleDeleteMemory}
                 onOpenCreator={() => setIsCreatorOpen(true)}
                 onGoHome={() => setActiveSpace('home')}
