@@ -4,6 +4,7 @@ import { Heart, Calendar, Users, Lock, ShieldCheck, Plus, ChevronRight, ArrowLef
 import { PhaseSchatullen } from '../PhaseSchatullen';
 import { Lifeloop } from '../Lifeloop';
 import { KaleidoscopeIcon } from '../SpaceRingHeader';
+import { FamilyTreeCanvas } from '../FamilyTreeCanvas';
 
 export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onDateChange, onDeleteMemory, onOpenCreator, onGoHome }) => {
   const [subView, setSubView] = useState('overview');
@@ -505,195 +506,13 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
                 </div>
               </div>
 
-              {/* TAB 1: MEHRGENERATIONEN STAMMBAUM (6 LEVEL TREE) */}
+              {/* TAB 1: MEHRGENERATIONEN STAMMBAUM (6 LEVEL CANVAS WITH GRAPHIC CONNECTORS) */}
               {familyTab === 'tree' && (
-                <div className="space-y-6">
-                  <div className="text-center space-y-1">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                      Mehrgenerationen-Stammbaum (Ahnen bis Enkel)
-                    </span>
-                    <p className="text-xs text-slate-500 font-serif">
-                      Tippen Sie auf eine Person, um Details, Fragen & Notizen anzuzeigen.
-                    </p>
-                  </div>
-
-                  {/* SCROLLABLE 6-LEVEL TREE CANVAS */}
-                  <div className="p-4 bg-slate-900 text-white rounded-3xl space-y-5 border-2 border-emerald-500/30 overflow-x-auto">
-                    
-                    {/* LEVEL 0: URGROSSELTERN */}
-                    {gen0.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-purple-400 font-bold uppercase tracking-widest block">
-                          Ebene 1 • Urgroßeltern & Ahnen
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen0.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-purple-600 border-white text-white shadow-lg ring-2 ring-purple-400'
-                                  : 'bg-slate-800 border-purple-500/40 text-slate-200 hover:border-purple-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-400 flex items-center justify-center font-bold text-xs text-purple-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-purple-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="w-0.5 h-5 bg-purple-500/60 mx-auto mt-2" />
-                      </div>
-                    )}
-
-                    {/* LEVEL 1: GROSSELTERN */}
-                    {gen1.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-amber-400 font-bold uppercase tracking-widest block">
-                          Ebene 2 • Großeltern
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen1.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-amber-600 border-white text-white shadow-lg ring-2 ring-amber-400'
-                                  : 'bg-slate-800 border-amber-500/40 text-slate-200 hover:border-amber-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center font-bold text-xs text-amber-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-amber-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="w-0.5 h-5 bg-amber-500/60 mx-auto mt-2" />
-                      </div>
-                    )}
-
-                    {/* LEVEL 2: ELTERN */}
-                    {gen2.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-blue-400 font-bold uppercase tracking-widest block">
-                          Ebene 3 • Eltern, Tanten & Onkel
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen2.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-blue-600 border-white text-white shadow-lg ring-2 ring-blue-400'
-                                  : 'bg-slate-800 border-blue-500/40 text-slate-200 hover:border-blue-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-400 flex items-center justify-center font-bold text-xs text-blue-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-blue-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="w-0.5 h-5 bg-blue-500/60 mx-auto mt-2" />
-                      </div>
-                    )}
-
-                    {/* LEVEL 3: ICH, EHEPARTNER & GESCHWISTER */}
-                    {gen3.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase tracking-widest block">
-                          Ebene 4 • Ich, Partner & Geschwister
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen3.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-emerald-600 border-white text-white shadow-lg ring-2 ring-emerald-400'
-                                  : 'bg-slate-800 border-emerald-500/40 text-slate-200 hover:border-emerald-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center font-bold text-xs text-emerald-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-emerald-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="w-0.5 h-5 bg-emerald-500/60 mx-auto mt-2" />
-                      </div>
-                    )}
-
-                    {/* LEVEL 4: KINDER & NICHTEN/NEFFEN */}
-                    {gen4.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-teal-400 font-bold uppercase tracking-widest block">
-                          Ebene 5 • Kinder & Nichten/Neffen
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen4.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-teal-600 border-white text-white shadow-lg ring-2 ring-teal-400'
-                                  : 'bg-slate-800 border-teal-500/40 text-slate-200 hover:border-teal-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-teal-500/20 border border-teal-400 flex items-center justify-center font-bold text-xs text-teal-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-teal-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                        {gen5.length > 0 && <div className="w-0.5 h-5 bg-teal-500/60 mx-auto mt-2" />}
-                      </div>
-                    )}
-
-                    {/* LEVEL 5: ENKELKINDER */}
-                    {gen5.length > 0 && (
-                      <div className="space-y-2 text-center min-w-[300px]">
-                        <span className="text-[9px] font-mono text-rose-400 font-bold uppercase tracking-widest block">
-                          Ebene 6 • Enkelkinder
-                        </span>
-                        <div className="flex items-center justify-center gap-3 flex-wrap">
-                          {gen5.map((p) => (
-                            <div
-                              key={p.id}
-                              onClick={() => setSelectedPerson(p)}
-                              className={`p-2.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center text-center space-y-1 w-28 ${
-                                selectedPerson?.id === p.id
-                                  ? 'bg-rose-600 border-white text-white shadow-lg ring-2 ring-rose-400'
-                                  : 'bg-slate-800 border-rose-500/40 text-slate-200 hover:border-rose-400'
-                              }`}
-                            >
-                              <div className="w-8 h-8 rounded-full bg-rose-500/20 border border-rose-400 flex items-center justify-center font-bold text-xs text-rose-300">
-                                <User className="w-3.5 h-3.5" />
-                              </div>
-                              <span className="font-serif font-bold text-xs line-clamp-1">{p.name}</span>
-                              <span className="text-[9px] font-mono text-rose-300">{p.role} ({p.birthYear})</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                  </div>
+                <div className="space-y-4">
+                  <FamilyTreeCanvas
+                    selectedPerson={selectedPerson}
+                    onSelectPerson={setSelectedPerson}
+                  />
 
                   {/* SELECTED PERSON DETAIL CARD */}
                   {selectedPerson && (
