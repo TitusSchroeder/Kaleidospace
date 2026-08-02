@@ -147,12 +147,7 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
           <div className="p-2.5 bg-white text-emerald-600 rounded-2xl shadow-xs">
             <Fingerprint className="w-6 h-6" />
           </div>
-          <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-700 px-2 py-0.5 rounded-full">
-              Personal Space
-            </span>
-            <h2 className="text-xl font-serif font-bold">Personal Space</h2>
-          </div>
+          <h2 className="text-xl font-serif font-bold">Personal Space</h2>
         </div>
       </div>
 

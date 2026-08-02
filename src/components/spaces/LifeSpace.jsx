@@ -72,12 +72,7 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
           <div className="p-2.5 bg-white text-blue-600 rounded-2xl shadow-xs">
             <Target className="w-6 h-6" />
           </div>
-          <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-blue-700 px-2 py-0.5 rounded-full">
-              Life Space
-            </span>
-            <h2 className="text-xl font-serif font-bold">Life Space</h2>
-          </div>
+          <h2 className="text-xl font-serif font-bold">Life Space</h2>
         </div>
       </div>
 

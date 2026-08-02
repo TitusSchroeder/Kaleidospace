@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Calendar, Lock, Unlock, Clock, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, ChevronRight } from 'lucide-react';
 
 export const Lifeloop = ({
   phases = [],
@@ -16,7 +16,7 @@ export const Lifeloop = ({
   // Circle Parameters (360px SVG viewBox 400x400)
   const center = 200;
   const radius = 140;
-  const strokeWidth = 30;
+  const strokeWidth = 32;
   const numPhases = phases.length;
   const segmentAngle = 360 / numPhases;
 
@@ -55,55 +55,25 @@ export const Lifeloop = ({
   };
 
   return (
-    <section className="w-full my-6 flex flex-col items-center select-none">
+    <section className="w-full my-2 flex flex-col items-center select-none">
       <AnimatePresence mode="wait">
-        {/* VIEW 1: CLEAN 12 O'CLOCK LIFELOOP CIRCLE */}
+        {/* VIEW 1: ULTRA-COMPACT 12 O'CLOCK LIFELOOP CIRCLE */}
         {viewMode === 'circle' ? (
           <motion.div
             key="circle-mode"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="w-full max-w-4xl mx-auto glass-card rounded-3xl p-6 lg:p-10 border border-slate-200/90 shadow-md bg-white text-slate-900 flex flex-col items-center text-center space-y-6"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="w-full max-w-md mx-auto bg-white rounded-3xl p-3 border-2 border-slate-200 shadow-sm flex flex-col items-center text-center space-y-3"
           >
-            {/* Header */}
-            <div className="space-y-1">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200">
-                Der Große Lebenskreis (12 Uhr)
-              </span>
-              <h2 className="text-3xl font-serif font-bold text-slate-900 tracking-tight">
-                Der Lifeloop
-              </h2>
-              <p className="text-xs text-slate-500 font-serif max-w-md mx-auto">
-                Der Ring füllt sich ab 12 Uhr im Uhrzeigersinn bis zum simulierten Jahr (<span className="font-bold text-emerald-700">{currentYear}</span>). Klicken Sie auf ein Segment, um den Zeitstrahl zu öffnen.
-              </p>
-            </div>
-
-            {/* INLINE SIMULATED YEAR SLIDER CONTROL */}
-            <div className="w-full max-w-md bg-slate-900 text-white rounded-2xl p-3 px-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md border border-slate-800">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-400">
-                <Clock className="w-4 h-4 text-emerald-400" />
-                <span>Simuliertes Jahr: <span className="text-white font-mono text-sm">{currentYear}</span></span>
-              </div>
-
-              <input
-                type="range"
-                min="1996"
-                max="2066"
-                value={currentYear}
-                onChange={handleYearSliderChange}
-                className="w-full sm:w-44 accent-emerald-500 cursor-pointer h-2 bg-slate-700 rounded-lg"
-              />
-            </div>
-
-            {/* CLEAN 12 O'CLOCK SVG CIRCLE */}
-            <div className="relative flex items-center justify-center my-2">
+            {/* COMPACT SVG CIRCLE */}
+            <div className="relative flex items-center justify-center my-1">
               <svg
-                width="340"
-                height="340"
+                width="220"
+                height="220"
                 viewBox="0 0 400 400"
-                className="drop-shadow-md"
+                className="drop-shadow-sm"
               >
                 {/* 1. Background Gray Ring */}
                 <circle
@@ -111,7 +81,7 @@ export const Lifeloop = ({
                   cy={center}
                   r={radius}
                   fill="none"
-                  stroke="#e2e8f0"
+                  stroke="#f1f5f9"
                   strokeWidth={strokeWidth}
                 />
 
@@ -152,7 +122,7 @@ export const Lifeloop = ({
                         strokeWidth={isActive ? strokeWidth + 6 : strokeWidth}
                         strokeLinecap="round"
                         className="group-hover:opacity-100 transition-all duration-200"
-                        opacity={isActive ? 1 : 0.85}
+                        opacity={isActive ? 1 : 0.9}
                       />
                     </g>
                   );
@@ -161,11 +131,11 @@ export const Lifeloop = ({
                 {/* 12 O'Clock Top Indicator Tick */}
                 <line
                   x1={center}
-                  y1={center - radius - strokeWidth / 2 - 6}
+                  y1={center - radius - strokeWidth / 2 - 4}
                   x2={center}
-                  y2={center - radius + strokeWidth / 2 + 6}
+                  y2={center - radius + strokeWidth / 2 + 4}
                   stroke="#ffffff"
-                  strokeWidth="3"
+                  strokeWidth="4"
                   strokeLinecap="round"
                   className="pointer-events-none"
                 />
@@ -175,196 +145,95 @@ export const Lifeloop = ({
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div
                   onClick={() => onSelectPhase('all')}
-                  className="w-40 h-40 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 shadow-md p-4 flex flex-col items-center justify-center text-center space-y-1 pointer-events-auto cursor-pointer transition-all hover:scale-105"
+                  className="w-28 h-28 rounded-full bg-white border border-slate-200 shadow-md p-2 flex flex-col items-center justify-center text-center pointer-events-auto cursor-pointer transition-all hover:scale-105"
                 >
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                  <span className="text-[9px] font-mono font-bold uppercase text-slate-400">
                     Jahr {currentYear}
                   </span>
-                  <h3 className="text-sm font-serif font-bold text-slate-900 line-clamp-1 px-1">
-                    {activePhaseId === 'all' ? 'Der Lebenskreis' : activePhase?.name}
+                  <h3 className="text-xs font-serif font-bold text-slate-900 line-clamp-1">
+                    {activePhaseId === 'all' ? 'Lifeloop' : activePhase?.name}
                   </h3>
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-0.5 rounded-full border border-emerald-200">
-                    {memories.length} Erinnerungen
+                  <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 mt-0.5">
+                    {memories.length} Momente
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* PHASE SELECTION BUTTONS */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-              <button
-                onClick={() => onSelectPhase('all')}
-                className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all ${
-                  activePhaseId === 'all'
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                }`}
-              >
-                Alle ({memories.length})
-              </button>
+            {/* COMPACT SIMULATED YEAR SLIDER CONTROL */}
+            <div className="w-full bg-slate-900 text-white rounded-xl p-2 px-3 flex items-center justify-between gap-2 shadow-xs text-xs">
+              <div className="flex items-center gap-1.5 font-bold text-emerald-400 text-[11px] whitespace-nowrap">
+                <Clock className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                <span>Jahr: <span className="text-white font-mono text-xs">{currentYear}</span></span>
+              </div>
 
-              {phases.map((phase, idx) => {
+              <input
+                type="range"
+                min="1996"
+                max="2066"
+                value={currentYear}
+                onChange={handleYearSliderChange}
+                className="w-full accent-emerald-500 cursor-pointer h-1.5 bg-slate-700 rounded-lg"
+              />
+            </div>
+
+            {/* QUICK PHASE PILLS */}
+            <div className="flex flex-wrap items-center justify-center gap-1 pt-1">
+              {phases.map((phase) => {
                 const isActive = activePhaseId === phase.id;
-                const phaseStartDeg = idx * segmentAngle - 90;
-                const isReached = fillEndAngle > phaseStartDeg;
-
                 return (
                   <button
                     key={phase.id}
                     onClick={() => handlePhaseClick(phase.id)}
-                    className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold transition-all border ${
+                    className={`px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all border ${
                       isActive
-                        ? 'bg-white text-slate-900 border-slate-900 shadow-xs ring-1 ring-slate-900'
-                        : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700'
+                        ? 'bg-slate-900 text-white border-slate-900'
+                        : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
                     }`}
                   >
-                    <span
-                      className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: isReached ? phase.color : '#cbd5e1' }}
-                    />
-                    <span className={isReached ? 'text-slate-800 font-bold' : 'text-slate-400 font-normal'}>
-                      {phase.name}
-                    </span>
+                    {phase.name.split(' ')[0]}
                   </button>
                 );
               })}
             </div>
           </motion.div>
         ) : (
-          /* VIEW 2: CLEAN, STABLE PHASEN-ZEITSTRAHL CONTAINER */
+          /* VIEW 2: TIMELINE VIEW FOR SELECTED PHASE */
           <motion.div
             key="timeline-mode"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="w-full max-w-5xl mx-auto glass-card rounded-3xl p-6 lg:p-8 border-t-8 border border-slate-200/90 shadow-xl bg-white text-slate-900 space-y-6"
-            style={{ borderTopColor: activePhase?.color || '#10b981' }}
+            transition={{ duration: 0.2 }}
+            className="w-full max-w-md mx-auto bg-white rounded-3xl p-4 border-2 border-slate-200 shadow-sm space-y-3"
           >
-            {/* Header with Back Button */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleReturnToCircle}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-md active:scale-95"
-                >
-                  <ArrowLeft className="w-4 h-4 text-emerald-400" />
-                  <span>Zurück zum Lebenskreis</span>
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-4 h-4 rounded-full shadow-xs"
-                    style={{ backgroundColor: activePhase?.color || '#10b981' }}
-                  />
-                  <h3 className="font-serif font-bold text-2xl text-slate-900">
-                    Phasen-Zeitstrahl: {activePhase?.name}
-                  </h3>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-mono text-slate-500">
-                <span className="px-3 py-1 bg-slate-100 rounded-xl font-bold">
-                  {activePhase?.startAge}–{activePhase?.endAge} Jahre
-                </span>
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-800 rounded-xl font-bold border border-emerald-200">
-                  {phaseMemories.length} Erinnerungen
-                </span>
-              </div>
+            <div className="flex items-center justify-between border-b pb-2">
+              <button
+                onClick={handleReturnToCircle}
+                className="flex items-center gap-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1 rounded-xl cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Zurück zum Lifeloop</span>
+              </button>
+              <span className="text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md">
+                {activePhase?.name}
+              </span>
             </div>
 
-            {/* HORIZONTAL ZEITSTRAHL ACHSE WITH ALTERNATING CARDS (DRÜBER & DRUNTER) */}
-            <div className="w-full space-y-2">
-              <p className="text-xs text-slate-500 font-serif italic text-center">
-                {activePhase?.description}
-              </p>
-
-              {/* Scrollable Timeline Area */}
-              <div className="relative py-4 my-2 overflow-x-auto min-h-[520px] flex flex-col justify-center">
-                
-                {/* CENTRAL HORIZONTAL AXIS LINE */}
-                <div className="absolute top-[260px] left-0 right-0 h-1.5 bg-gradient-to-r from-slate-200 via-slate-400 to-slate-200 rounded-full shadow-inner" />
-
-                {/* Alternating Memory Columns */}
-                <div className="relative z-10 flex items-center gap-10 min-w-max px-12">
-                  {phaseMemories.length > 0 ? (
-                    phaseMemories.map((mem, index) => {
-                      const isTopRow = index % 2 === 0;
-                      const isLocked = mem.isTimeLocked && (!mem.unlockDate || simulatedDate < mem.unlockDate);
-
-                      return (
-                        <div
-                          key={mem.id}
-                          className="relative flex flex-col items-center w-72 flex-shrink-0"
-                          style={{
-                            marginTop: isTopRow ? '0px' : '260px',
-                            marginBottom: isTopRow ? '260px' : '0px',
-                          }}
-                        >
-                          {/* CARD ITEM */}
-                          <div className="w-72 glass-card rounded-2xl p-4 border border-slate-200 shadow-md space-y-2 bg-white hover:shadow-lg transition-all">
-                            {/* Photo Thumbnail */}
-                            <div className="relative h-32 rounded-xl overflow-hidden bg-slate-950">
-                              <img
-                                src={mem.imageUrl}
-                                alt={mem.title}
-                                className={`w-full h-full object-cover transition-all ${
-                                  isLocked ? 'blur-md opacity-30 brightness-50' : 'opacity-100'
-                                }`}
-                              />
-                              {isLocked && (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center p-2 bg-slate-950/70 text-white text-center">
-                                  <Lock className="w-4 h-4 text-amber-400 mb-0.5 animate-pulse" />
-                                  <span className="text-[10px] font-bold text-amber-300">
-                                    Freigabe am {mem.unlockDate}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Text Info */}
-                            <div className="space-y-1 text-left">
-                              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="w-3 h-3 text-emerald-600" />
-                                  {mem.createdAt}
-                                </span>
-                              </div>
-
-                              <h4 className="font-serif font-bold text-xs text-slate-900 line-clamp-1">
-                                {mem.title}
-                              </h4>
-
-                              <p className="text-[11px] text-slate-600 font-serif leading-relaxed line-clamp-2">
-                                {mem.story}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* VERTICAL CONNECTOR STICK */}
-                          <div
-                            className={`absolute w-0.5 bg-slate-300 ${
-                              isTopRow ? 'top-[225px] h-[35px]' : 'bottom-[225px] h-[35px]'
-                            }`}
-                          />
-
-                          {/* TICK NODE ON CENTRAL AXIS LINE */}
-                          <div
-                            className="absolute top-[252px] w-5 h-5 rounded-full bg-white border-2 shadow-md flex items-center justify-center font-mono text-[9px] font-bold z-20"
-                            style={{ borderColor: activePhase?.color || '#10b981' }}
-                          >
-                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: activePhase?.color || '#10b981' }} />
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="w-full text-center py-12 text-slate-400 text-xs italic">
-                      Keine Erinnerungen in dieser Lebensphase hinterlegt.
-                    </div>
-                  )}
+            <div className="space-y-2">
+              {phaseMemories.length > 0 ? (
+                phaseMemories.map((mem) => (
+                  <div key={mem.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                    <span className="font-bold text-slate-900 block">{mem.title}</span>
+                    <p className="text-slate-600 font-serif italic line-clamp-2">{mem.story}</p>
+                    <span className="text-[10px] text-slate-400 block font-mono">{mem.createdAt}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6 text-slate-400 text-xs italic bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                  Keine Erinnerungen in dieser Lebensphase.
                 </div>
-              </div>
+              )}
             </div>
           </motion.div>
         )}

@@ -116,48 +116,6 @@ export function App() {
                   />
                 </div>
 
-                {/* OVERVIEW STATS STACKED VERTICALLY */}
-                <div className="grid grid-cols-1 gap-2.5">
-                  <div
-                    onClick={() => setActiveSpace('experience')}
-                    className="p-4 bg-red-50 rounded-2xl border border-red-200 flex items-center justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <KaleidoscopeIcon className="w-5 h-5" />
-                      <div>
-                        <span className="font-bold text-xs text-slate-900 block">Experience Space</span>
-                        <span className="text-[10px] text-slate-500 font-mono">{state.memories.length} gespeicherte Momente</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    onClick={() => setActiveSpace('personal')}
-                    className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Fingerprint className="w-5 h-5 text-emerald-600" />
-                      <div>
-                        <span className="font-bold text-xs text-slate-900 block">Personal Space</span>
-                        <span className="text-[10px] text-slate-500 font-mono">{(state.werte || []).length} Prinzipien in der Werteschrift</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div
-                    onClick={() => setActiveSpace('life')}
-                    className="p-4 bg-blue-50 rounded-2xl border border-blue-200 flex items-center justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <Target className="w-5 h-5 text-blue-600" />
-                      <div>
-                        <span className="font-bold text-xs text-slate-900 block">Life Space</span>
-                        <span className="text-[10px] text-slate-500 font-mono">Datentresor & Vorsorgedokumente</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             )}
 

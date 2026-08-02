@@ -173,41 +173,30 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
           <div className="p-2.5 bg-white text-red-600 rounded-2xl shadow-xs">
             <KaleidoscopeIcon className="w-6 h-6" />
           </div>
-          <div>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-red-700 px-2 py-0.5 rounded-full">
-              Experience Space
-            </span>
-            <h2 className="text-xl font-serif font-bold">Experience Space</h2>
-          </div>
+          <h2 className="text-xl font-serif font-bold">Experience Space</h2>
         </div>
       </div>
 
       {/* OVERVIEW SUB-MODULE CARDS */}
       {subView === 'overview' && (
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           
-          {/* MODULE 0: DER LIFELOOP ORBIT */}
-          <div
-            onClick={() => setSubView('lifeloop')}
-            className="p-4 bg-slate-900 text-white rounded-2xl border-2 border-emerald-500 shadow-md hover:border-emerald-400 transition-all cursor-pointer flex items-center justify-between"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/30">
-                <CircleDot className="w-5 h-5 animate-spin-slow" />
-              </div>
-              <div>
-                <h3 className="font-serif font-bold text-sm text-white">Der Lifeloop Orbit</h3>
-                <p className="text-[11px] text-slate-300 font-serif">Erinnerungskreis & Zeitreise</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-emerald-400" />
-          </div>
+          {/* DIRECTLY OPEN COMPACT LIFELOOP ORBIT */}
+          <Lifeloop
+            phases={phases}
+            activePhaseId={activePhaseId}
+            onSelectPhase={setActivePhaseId}
+            memories={memories}
+            simulatedDate={simulatedDate}
+            onDateChange={onDateChange}
+          />
 
-          {/* MODULE 1: MOMENTE & ERINNERUNGEN */}
-          <div
-            onClick={() => setSubView('moments')}
-            className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-red-500 transition-all cursor-pointer flex items-center justify-between"
-          >
+          <div className="space-y-2.5">
+            {/* MODULE 1: MOMENTE & ERINNERUNGEN */}
+            <div
+              onClick={() => setSubView('moments')}
+              className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-red-500 transition-all cursor-pointer flex items-center justify-between"
+            >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-red-100 text-red-600 rounded-xl">
                 <Heart className="w-5 h-5" />
@@ -287,9 +276,9 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             </div>
             <ChevronRight className="w-5 h-5 text-slate-400" />
           </div>
-
         </div>
-      )}
+      </div>
+    )}
 
       {/* SUB-VIEW DETAILS */}
       {subView !== 'overview' && (
@@ -301,18 +290,6 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
             <ArrowLeft className="w-4 h-4" />
             <span>Zurück zur Übersicht</span>
           </button>
-
-          {/* SUB-VIEW 0: LIFELOOP ORBIT */}
-          {subView === 'lifeloop' && (
-            <Lifeloop
-              phases={phases}
-              activePhaseId={activePhaseId}
-              onSelectPhase={setActivePhaseId}
-              memories={memories}
-              simulatedDate={simulatedDate}
-              onDateChange={onDateChange}
-            />
-          )}
 
           {/* SUB-VIEW 1: MOMENTE */}
           {subView === 'moments' && (
