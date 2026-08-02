@@ -61,6 +61,9 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace, onSwitchT
           <p className="text-xs font-serif italic text-emerald-400">
             Celebrating life
           </p>
+          <p className="text-[9px] font-mono text-slate-400 mt-0.5">
+            Mein Lebensbegleiter | My Life Companion (Life Operating System)
+          </p>
         </div>
 
         {onSwitchToIOS26 && (

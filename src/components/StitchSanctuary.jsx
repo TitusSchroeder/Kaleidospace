@@ -123,10 +123,13 @@ export const StitchSanctuary = ({
 
             <div className="space-y-1">
               <h1 className="font-serif-sanctuary text-2xl font-bold text-[#1b1c1a] tracking-tight">
-                Mein Lebensbegleiter
+                KALEIDOspace
               </h1>
-              <p className="text-xs text-[#554336] leading-relaxed">
-                Ihre Lebenserfahrungen, Familienstammbaum & Werte im sanften Papier-Design.
+              <p className="text-xs font-serif-sanctuary italic text-[#8d4b00] font-semibold">
+                Celebrating life
+              </p>
+              <p className="text-[10px] text-[#554336] leading-relaxed">
+                Mein Lebensbegleiter | My Life Companion (Life Operating System)
               </p>
             </div>
 

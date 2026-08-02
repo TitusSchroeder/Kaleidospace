@@ -121,10 +121,13 @@ export const StitchObsidian = ({
 
             <div className="space-y-1">
               <h1 className="font-geist-obsidian text-2xl font-extrabold text-white tracking-tight leading-tight">
-                Obsidian Cockpit
+                KALEIDOspace
               </h1>
-              <p className="text-xs text-[#c7c4d7] leading-relaxed">
-                Präzises Digitales Lebens-Betriebssystem im Obsidian Hardware-Interface.
+              <p className="text-xs font-geist-obsidian italic text-[#4cd7f6] font-semibold">
+                Celebrating life
+              </p>
+              <p className="text-[10px] text-[#c7c4d7] leading-relaxed">
+                Mein Lebensbegleiter | My Life Companion (Life Operating System)
               </p>
             </div>
 

@@ -147,7 +147,12 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
           <div className="p-2.5 bg-white text-emerald-600 rounded-2xl shadow-xs">
             <Fingerprint className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-serif font-bold">Personal Space</h2>
+          <div>
+            <h2 className="text-xl font-serif font-bold">Personal Space</h2>
+            <p className="text-xs font-serif italic text-emerald-100 mt-0.5">
+              Einordnen / Rahmen / Korridor / Verstehen / ideell / Das Leben bewusst leben | Living life mindfully
+            </p>
+          </div>
         </div>
       </div>
 

@@ -286,7 +286,12 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
           <div className="p-2.5 bg-white text-red-600 rounded-2xl shadow-xs">
             <KaleidoscopeIcon className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-serif font-bold">Experience Space</h2>
+          <div>
+            <h2 className="text-xl font-serif font-bold">Experience Space</h2>
+            <p className="text-xs font-serif italic text-red-100 mt-0.5">
+              Leben / Wertvolle Momente bewahren | Preserving precious moments
+            </p>
+          </div>
         </div>
       </div>
 
@@ -339,18 +344,18 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
               <ChevronRight className="w-5 h-5 text-slate-400" />
             </div>
 
-            {/* MODULE 3: FAMILIE UND STAMMBAUM */}
+            {/* MODULE 3: FAMILIE UND FREUNDE */}
             <div
               onClick={() => setSubView('family')}
               className="p-4 bg-white rounded-2xl border-2 border-slate-200 shadow-sm hover:border-red-500 transition-all cursor-pointer flex items-center justify-between"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-emerald-100 text-emerald-600 rounded-xl">
-                  <GitBranch className="w-5 h-5" />
+                  <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-serif font-bold text-sm text-slate-900">Familie und Stammbaum</h3>
-                  <p className="text-[11px] text-slate-500 font-serif">Mehrgenerationen-Stammbaum ({friendsList.length} Personen)</p>
+                  <h3 className="font-serif font-bold text-sm text-slate-900">Familie und Freunde</h3>
+                  <p className="text-[11px] text-slate-500 font-serif">Notizen, Fragen, Vorbilder & Circles ({friendsList.length} Personen)</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-slate-400" />

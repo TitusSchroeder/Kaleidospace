@@ -72,7 +72,12 @@ export const LifeSpace = ({ letztesKapitel, onUpdateLetztesKapitel, onGoHome }) 
           <div className="p-2.5 bg-white text-blue-600 rounded-2xl shadow-xs">
             <Target className="w-6 h-6" />
           </div>
-          <h2 className="text-xl font-serif font-bold">Life Space</h2>
+          <div>
+            <h2 className="text-xl font-serif font-bold">Life Space</h2>
+            <p className="text-xs font-serif italic text-blue-100 mt-0.5">
+              Management / Planung und Umsetzung / Wesentliches im Blick behalten | Getting the essentials straight
+            </p>
+          </div>
         </div>
       </div>
 
