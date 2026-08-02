@@ -94,7 +94,11 @@ export function App() {
       <StitchSanctuary
         state={state}
         onGoBackToV1={() => setActivePrototype('v1')}
-        onOpenCreator={() => setIsCreatorOpen(true)}
+        onSaveMemory={handleSaveMemory}
+        onDeleteMemory={handleDeleteMemory}
+        onAddWerte={handleAddWerte}
+        onDeleteWerte={handleDeleteWerte}
+        onUpdateLetztesKapitel={handleUpdateLetztesKapitel}
       />
     );
   }
@@ -105,7 +109,11 @@ export function App() {
       <StitchObsidian
         state={state}
         onGoBackToV1={() => setActivePrototype('v1')}
-        onOpenCreator={() => setIsCreatorOpen(true)}
+        onSaveMemory={handleSaveMemory}
+        onDeleteMemory={handleDeleteMemory}
+        onAddWerte={handleAddWerte}
+        onDeleteWerte={handleDeleteWerte}
+        onUpdateLetztesKapitel={handleUpdateLetztesKapitel}
       />
     );
   }
