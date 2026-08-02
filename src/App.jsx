@@ -7,14 +7,15 @@ import { LifeSpace } from './components/spaces/LifeSpace';
 import { Lifeloop } from './components/Lifeloop';
 import { IntentionalCreator } from './components/IntentionalCreator';
 import { PrototypeIOS26 } from './components/PrototypeIOS26';
-import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck, Zap } from 'lucide-react';
+import { PrototypePinkArt } from './components/PrototypePinkArt';
+import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck, Zap, Heart } from 'lucide-react';
 
 export function App() {
   const [state, setState] = useState(getInitialState);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [activeSpace, setActiveSpace] = useState('home'); // 'home', 'experience', 'personal', 'life'
   const [activePhaseId, setActivePhaseId] = useState('all');
-  const [activePrototype, setActivePrototype] = useState('v1'); // 'v1' (Klassik) or 'ios26' (Liquid Glass)
+  const [activePrototype, setActivePrototype] = useState('v1'); // 'v1' (Klassik), 'ios26' (Liquid Glass), 'pinkart' (Vibrant Pink Art)
 
   // Auto save to localStorage when state changes
   useEffect(() => {
@@ -87,6 +88,18 @@ export function App() {
     );
   }
 
+  // IF USER IS TESTING PROTOTYPE 3 (Vibrant Pink Art Edition)
+  if (activePrototype === 'pinkart') {
+    return (
+      <PrototypePinkArt
+        state={state}
+        onGoBackToV1={() => setActivePrototype('v1')}
+        onSwitchToIOS26={() => setActivePrototype('ios26')}
+        onOpenCreator={() => setIsCreatorOpen(true)}
+      />
+    );
+  }
+
   return (
     <div className="w-full min-h-screen bg-slate-900 flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans">
       
@@ -106,25 +119,33 @@ export function App() {
           {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW — WITH LINK TO PROTOTYPE 2 */}
+            {/* HOMEPAGE VIEW — WITH LINKS TO PROTOTYPE 2 AND PROTOTYPE 3 */}
             {activeSpace === 'home' && (
-              <div className="space-y-4 select-none">
+              <div className="space-y-3 select-none">
                 
-                {/* PROTOTYPE 2 (iOS 26) BANNER BANNER LINK */}
-                <div 
-                  onClick={() => setActivePrototype('ios26')}
-                  className="p-3.5 bg-gradient-to-r from-slate-950 via-purple-950 to-indigo-950 text-white rounded-2xl border-2 border-purple-500/50 shadow-lg flex items-center justify-between cursor-pointer group hover:border-purple-400 transition-all"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-xl shadow-md">
-                      <Zap className="w-4 h-4 text-emerald-300 animate-pulse" />
-                    </div>
+                {/* PROTOTYPE SWITCHER BANNER GRID */}
+                <div className="grid grid-cols-2 gap-2">
+                  {/* BANNER 1: PROTOTYP 2 (iOS 26) */}
+                  <div 
+                    onClick={() => setActivePrototype('ios26')}
+                    className="p-3 bg-gradient-to-r from-slate-950 to-indigo-950 text-white rounded-2xl border-2 border-purple-500/50 shadow-md flex items-center gap-2 cursor-pointer hover:border-purple-400 transition-all"
+                  >
+                    <Zap className="w-4 h-4 text-purple-400 flex-shrink-0 animate-pulse" />
                     <div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-serif font-bold text-xs text-white">Prototyp 2: iOS 26 Liquid Glass</span>
-                        <span className="text-[9px] font-mono bg-emerald-500 text-slate-950 px-1.5 py-0.2 font-extrabold rounded-md uppercase">Neu</span>
-                      </div>
-                      <p className="text-[10px] text-slate-300 font-serif">Neuestes Stitch-Designkonzept testen →</p>
+                      <span className="font-serif font-bold text-[11px] text-white block line-clamp-1">Proto 2: iOS 26</span>
+                      <span className="text-[9px] font-mono text-purple-300">Liquid Glass →</span>
+                    </div>
+                  </div>
+
+                  {/* BANNER 2: PROTOTYP 3 (Pink Art) */}
+                  <div 
+                    onClick={() => setActivePrototype('pinkart')}
+                    className="p-3 bg-gradient-to-r from-rose-900 to-pink-950 text-white rounded-2xl border-2 border-rose-400/60 shadow-md flex items-center gap-2 cursor-pointer hover:border-rose-300 transition-all"
+                  >
+                    <Heart className="w-4 h-4 text-pink-300 flex-shrink-0 animate-bounce" />
+                    <div>
+                      <span className="font-serif font-bold text-[11px] text-white block line-clamp-1">Proto 3: Pink Art</span>
+                      <span className="text-[9px] font-mono text-pink-300">Sanctuary →</span>
                     </div>
                   </div>
                 </div>
