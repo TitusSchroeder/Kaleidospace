@@ -8,14 +8,15 @@ import { Lifeloop } from './components/Lifeloop';
 import { IntentionalCreator } from './components/IntentionalCreator';
 import { PrototypeIOS26 } from './components/PrototypeIOS26';
 import { PrototypePinkArt } from './components/PrototypePinkArt';
-import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck, Zap, Heart } from 'lucide-react';
+import { StitchPrototype } from './components/StitchPrototype';
+import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck, Zap, Heart, Layers } from 'lucide-react';
 
 export function App() {
   const [state, setState] = useState(getInitialState);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [activeSpace, setActiveSpace] = useState('home'); // 'home', 'experience', 'personal', 'life'
   const [activePhaseId, setActivePhaseId] = useState('all');
-  const [activePrototype, setActivePrototype] = useState('v1'); // 'v1' (Klassik), 'ios26' (Liquid Glass), 'pinkart' (Vibrant Pink Art)
+  const [activePrototype, setActivePrototype] = useState('v1'); // 'v1', 'stitch', 'ios26', 'pinkart'
 
   // Auto save to localStorage when state changes
   useEffect(() => {
@@ -76,6 +77,17 @@ export function App() {
     }));
   };
 
+  // IF USER IS TESTING GOOGLE STITCH OFFICIAL DESIGN SYSTEM
+  if (activePrototype === 'stitch') {
+    return (
+      <StitchPrototype
+        state={state}
+        onGoBackToV1={() => setActivePrototype('v1')}
+        onSaveMemory={handleSaveMemory}
+      />
+    );
+  }
+
   // IF USER IS TESTING PROTOTYPE 2 (iOS 26 Liquid Glass Edition)
   if (activePrototype === 'ios26') {
     return (
@@ -119,18 +131,37 @@ export function App() {
           {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW — WITH LINKS TO PROTOTYPE 2 AND PROTOTYPE 3 */}
+            {/* HOMEPAGE VIEW — WITH STITCH PROTOTYPE LINK */}
             {activeSpace === 'home' && (
               <div className="space-y-3 select-none">
                 
-                {/* PROTOTYPE SWITCHER BANNER GRID */}
+                {/* HERO FEATURED BANNER: GOOGLE STITCH OFFICIAL DESIGN */}
+                <div
+                  onClick={() => setActivePrototype('stitch')}
+                  className="p-4 bg-[#1d1b20] text-white rounded-2xl border-2 border-[#4f378a] shadow-lg flex items-center justify-between cursor-pointer group hover:bg-[#2b2830] transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-[#6750a4] text-white rounded-xl shadow-md border border-[#e9ddff]/30">
+                      <Layers className="w-5 h-5 text-emerald-400 animate-pulse" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-serif font-bold text-xs text-white">Google Stitch Prototyp (Exakter Entwurf)</span>
+                        <span className="text-[8px] font-mono bg-[#e9ddff] text-[#22005d] px-1.5 py-0.2 font-extrabold rounded-md uppercase">Stitch API</span>
+                      </div>
+                      <p className="text-[10px] text-slate-300 font-serif">Original Grid Canvas, WerteKompass Deep Dive & Bottom Bar →</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* OTHER PROTOTYPE SWITCHER BANNER GRID */}
                 <div className="grid grid-cols-2 gap-2">
                   {/* BANNER 1: PROTOTYP 2 (iOS 26) */}
                   <div 
                     onClick={() => setActivePrototype('ios26')}
-                    className="p-3 bg-gradient-to-r from-slate-950 to-indigo-950 text-white rounded-2xl border-2 border-purple-500/50 shadow-md flex items-center gap-2 cursor-pointer hover:border-purple-400 transition-all"
+                    className="p-3 bg-gradient-to-r from-slate-950 to-indigo-950 text-white rounded-2xl border border-purple-500/40 shadow-sm flex items-center gap-2 cursor-pointer hover:border-purple-400 transition-all"
                   >
-                    <Zap className="w-4 h-4 text-purple-400 flex-shrink-0 animate-pulse" />
+                    <Zap className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
                     <div>
                       <span className="font-serif font-bold text-[11px] text-white block line-clamp-1">Proto 2: iOS 26</span>
                       <span className="text-[9px] font-mono text-purple-300">Liquid Glass →</span>
@@ -140,9 +171,9 @@ export function App() {
                   {/* BANNER 2: PROTOTYP 3 (Pink Art) */}
                   <div 
                     onClick={() => setActivePrototype('pinkart')}
-                    className="p-3 bg-gradient-to-r from-rose-900 to-pink-950 text-white rounded-2xl border-2 border-rose-400/60 shadow-md flex items-center gap-2 cursor-pointer hover:border-rose-300 transition-all"
+                    className="p-3 bg-gradient-to-r from-rose-900 to-pink-950 text-white rounded-2xl border border-rose-400/50 shadow-sm flex items-center gap-2 cursor-pointer hover:border-rose-300 transition-all"
                   >
-                    <Heart className="w-4 h-4 text-pink-300 flex-shrink-0 animate-bounce" />
+                    <Heart className="w-3.5 h-3.5 text-pink-300 flex-shrink-0" />
                     <div>
                       <span className="font-serif font-bold text-[11px] text-white block line-clamp-1">Proto 3: Pink Art</span>
                       <span className="text-[9px] font-mono text-pink-300">Sanctuary →</span>
