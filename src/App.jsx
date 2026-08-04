@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { getInitialState, saveState } from './utils/storage';
-import { SpaceRingHeader, KaleidoscopeIcon } from './components/SpaceRingHeader';
+import { SpaceRingHeader } from './components/SpaceRingHeader';
 import { ExperienceSpace } from './components/spaces/ExperienceSpace';
 import { PersonalSpace } from './components/spaces/PersonalSpace';
 import { LifeSpace } from './components/spaces/LifeSpace';
 import { Lifeloop } from './components/Lifeloop';
 import { IntentionalCreator } from './components/IntentionalCreator';
-import { StitchPrototype } from './components/StitchPrototype';
-import { StitchSanctuary } from './components/StitchSanctuary';
-import { StitchObsidian } from './components/StitchObsidian';
-import { Fingerprint, Target, Plus, Sparkles, Box, Lock, ShieldCheck, Zap, Heart, Layers, Compass } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 export function App() {
   const [state, setState] = useState(getInitialState);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [activeSpace, setActiveSpace] = useState('home'); // 'home', 'experience', 'personal', 'life'
   const [activePhaseId, setActivePhaseId] = useState('all');
-  const [activePrototype, setActivePrototype] = useState('v1'); // 'v1', 'stitch', 'sanctuary', 'obsidian'
 
   // Auto save to localStorage when state changes
   useEffect(() => {
@@ -77,47 +73,6 @@ export function App() {
     }));
   };
 
-  // IF USER IS TESTING GOOGLE STITCH WERTEKOMPASS PROTOTYPE
-  if (activePrototype === 'stitch') {
-    return (
-      <StitchPrototype
-        state={state}
-        onGoBackToV1={() => setActivePrototype('v1')}
-        onSaveMemory={handleSaveMemory}
-      />
-    );
-  }
-
-  // IF USER IS TESTING STITCH SANCTUARY DESIGN SYSTEM (1-to-1 Stitch Layout 1)
-  if (activePrototype === 'sanctuary') {
-    return (
-      <StitchSanctuary
-        state={state}
-        onGoBackToV1={() => setActivePrototype('v1')}
-        onSaveMemory={handleSaveMemory}
-        onDeleteMemory={handleDeleteMemory}
-        onAddWerte={handleAddWerte}
-        onDeleteWerte={handleDeleteWerte}
-        onUpdateLetztesKapitel={handleUpdateLetztesKapitel}
-      />
-    );
-  }
-
-  // IF USER IS TESTING STITCH OBSIDIAN TECH DESIGN SYSTEM (1-to-1 Stitch Layout 2)
-  if (activePrototype === 'obsidian') {
-    return (
-      <StitchObsidian
-        state={state}
-        onGoBackToV1={() => setActivePrototype('v1')}
-        onSaveMemory={handleSaveMemory}
-        onDeleteMemory={handleDeleteMemory}
-        onAddWerte={handleAddWerte}
-        onDeleteWerte={handleDeleteWerte}
-        onUpdateLetztesKapitel={handleUpdateLetztesKapitel}
-      />
-    );
-  }
-
   return (
     <div className="w-full min-h-screen bg-slate-900 flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans">
       
@@ -136,68 +91,28 @@ export function App() {
           {/* MAIN STAGE */}
           <main className="p-4 space-y-4">
             
-            {/* HOMEPAGE VIEW — WITH STITCH 1-TO-1 PROTOTYPE LINKS */}
+            {/* HOMEPAGE VIEW — CLEAN & STREAMLINED */}
             {activeSpace === 'home' && (
-              <div className="space-y-3 select-none">
+              <div className="space-y-4 select-none">
                 
-                {/* PROTOTYPE SWITCHER BANNER GRID */}
-                <div className="space-y-2">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 block">
-                    Stitch 1:1 Design-Entwürfe testen
-                  </span>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    {/* STITCH DESIGN 1: SANCTUARY */}
-                    <div 
-                      onClick={() => setActivePrototype('sanctuary')}
-                      className="p-3 bg-gradient-to-r from-[#ffdcc3] to-[#fbf9f5] text-[#2f1500] rounded-2xl border-2 border-[#8d4b00]/40 shadow-sm flex items-center gap-2 cursor-pointer hover:border-[#8d4b00] transition-all"
-                    >
-                      <Compass className="w-4 h-4 text-[#8d4b00] flex-shrink-0" />
-                      <div>
-                        <span className="font-serif font-bold text-[11px] text-[#1b1c1a] block line-clamp-1">Stitch: Sanctuary</span>
-                        <span className="text-[9px] font-mono text-[#8d4b00] font-bold">Warm Editorial →</span>
-                      </div>
-                    </div>
-
-                    {/* STITCH DESIGN 2: OBSIDIAN TECH */}
-                    <div 
-                      onClick={() => setActivePrototype('obsidian')}
-                      className="p-3 bg-[#0a0d14] text-white rounded-2xl border-2 border-[#8083ff]/40 shadow-sm flex items-center gap-2 cursor-pointer hover:border-[#8083ff] transition-all"
-                    >
-                      <Zap className="w-4 h-4 text-[#4cd7f6] flex-shrink-0" />
-                      <div>
-                        <span className="font-serif font-bold text-[11px] text-white block line-clamp-1">Stitch: Obsidian</span>
-                        <span className="text-[9px] font-mono text-[#4cd7f6] font-bold">Dark Hardware →</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* STITCH DESIGN 3: WERTEKOMPASS GRID */}
-                  <div
-                    onClick={() => setActivePrototype('stitch')}
-                    className="p-3 bg-[#1d1b20] text-white rounded-2xl border border-[#4f378a] shadow-sm flex items-center justify-between cursor-pointer hover:bg-[#2b2830] transition-all"
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Layers className="w-4 h-4 text-emerald-400" />
-                      <div>
-                        <span className="font-serif font-bold text-[11px] text-white block">Stitch: WerteKompass Canvas Grid</span>
-                        <span className="text-[9px] font-mono text-purple-300">Space Mono & Material Symbols →</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* QUICK INTENTIONAL CREATOR ACTION BUTTON */}
                 <button
                   onClick={() => setIsCreatorOpen(true)}
-                  className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                  className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer border border-slate-800"
                 >
-                  <Plus className="w-4 h-4 text-emerald-400" />
+                  <Plus className="w-4 h-4 text-emerald-400 stroke-[3]" />
                   <span>Erinnerung oder Zeitkapsel anlegen</span>
                 </button>
 
                 {/* LIFELOOP ORBIT ON HOMEPAGE */}
-                <div className="w-full">
+                <div className="w-full bg-white p-4 rounded-3xl border border-slate-200 shadow-xs space-y-3">
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-xs font-serif font-bold text-slate-900">Lebenskreis Orbit</span>
+                    <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 font-bold px-2 py-0.5 rounded-full border border-emerald-200">
+                      1996 – 2066
+                    </span>
+                  </div>
+
                   <Lifeloop
                     phases={state.phases}
                     activePhaseId={activePhaseId}

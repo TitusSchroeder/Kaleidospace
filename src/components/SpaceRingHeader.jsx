@@ -21,7 +21,7 @@ export const KaleidoscopeIcon = ({ className = "w-7 h-7" }) => (
   </svg>
 );
 
-export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace, onSwitchToIOS26 }) => {
+export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace }) => {
   const spaces = [
     {
       id: 'experience',
@@ -65,16 +65,6 @@ export const SpaceRingHeader = ({ activeSpace = 'home', onSelectSpace, onSwitchT
             Mein Lebensbegleiter | My Life Companion (Life Operating System)
           </p>
         </div>
-
-        {onSwitchToIOS26 && (
-          <button
-            onClick={onSwitchToIOS26}
-            className="px-2.5 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-[10px] font-mono font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer border border-purple-400/40 active:scale-95 flex items-center gap-1"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>iOS 26 Design</span>
-          </button>
-        )}
       </div>
 
       {/* 3 WHOOP-STYLE RING PORTALS WITH LARGER RINGS AND SMALLER CAPTION TEXT */}
