@@ -134,22 +134,24 @@ export const PersonalSpace = ({ werte = [], onAddWerte, onDeleteWerte, letztesKa
     <div className="w-full space-y-4 select-none pb-12">
       
       {/* SPACE HEADER WITH HOME BACK BUTTON */}
-      <div className="p-4 bg-emerald-600 text-white rounded-3xl border-2 border-emerald-700 shadow-md">
+      <div className="p-4.5 bg-gradient-to-br from-emerald-600 via-teal-700 to-slate-900 text-white rounded-3xl border border-emerald-500/30 shadow-lg relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
+
         <button
           onClick={onGoHome}
-          className="flex items-center gap-1 text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1 rounded-xl mb-3 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 text-xs font-bold bg-black/20 hover:bg-black/40 text-white px-3 py-1.5 rounded-full mb-3.5 transition-all cursor-pointer backdrop-blur-md border border-white/20 active:scale-95"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           <span>Zurück zur Startseite</span>
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-white text-emerald-600 rounded-2xl shadow-xs">
+          <div className="p-3 bg-white text-emerald-600 rounded-2xl shadow-md flex-shrink-0">
             <Fingerprint className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-serif font-bold">Personal Space</h2>
-            <p className="text-xs font-serif italic text-emerald-100 mt-0.5">
+            <h2 className="text-xl font-serif font-bold tracking-tight">Personal Space</h2>
+            <p className="text-xs font-serif italic text-emerald-100/90 mt-0.5">
               Einordnen / Rahmen / Korridor / Verstehen / ideell / Das Leben bewusst leben | Living life mindfully
             </p>
           </div>

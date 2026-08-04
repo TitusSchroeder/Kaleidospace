@@ -74,10 +74,10 @@ export function App() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-slate-900 flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans">
+    <div className="w-full min-h-screen bg-[#090b11] flex justify-center selection:bg-emerald-200 selection:text-emerald-900 font-sans p-0 sm:p-4">
       
       {/* MOBILE CONTAINER (MAX-W-MD) */}
-      <div className="w-full max-w-md min-h-screen bg-[#fafaf8] text-slate-900 shadow-2xl relative flex flex-col justify-between overflow-x-hidden">
+      <div className="w-full max-w-md min-h-screen bg-[#fafaf8] text-slate-900 shadow-2xl relative flex flex-col justify-between overflow-x-hidden sm:rounded-[36px] sm:border border-slate-800/80">
         
         <div className="flex-1">
           {/* TOP 3 SPACE RINGS — ONLY DISPLAYED ON HOMEPAGE */}

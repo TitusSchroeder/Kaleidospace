@@ -273,22 +273,24 @@ export const ExperienceSpace = ({ memories = [], phases = [], simulatedDate, onD
     <div className="w-full space-y-4 select-none pb-12">
       
       {/* SPACE HEADER WITH HOME BACK BUTTON */}
-      <div className="p-4 bg-red-600 text-white rounded-3xl border-2 border-red-700 shadow-md">
+      <div className="p-4.5 bg-gradient-to-br from-red-600 via-rose-600 to-amber-700 text-white rounded-3xl border border-red-500/30 shadow-lg relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
+
         <button
           onClick={onGoHome}
-          className="flex items-center gap-1 text-xs font-bold bg-red-700 hover:bg-red-800 text-white px-3 py-1 rounded-xl mb-3 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 text-xs font-bold bg-black/20 hover:bg-black/40 text-white px-3 py-1.5 rounded-full mb-3.5 transition-all cursor-pointer backdrop-blur-md border border-white/20 active:scale-95"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           <span>Zurück zur Startseite</span>
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-white text-red-600 rounded-2xl shadow-xs">
+          <div className="p-3 bg-white text-red-600 rounded-2xl shadow-md flex-shrink-0">
             <KaleidoscopeIcon className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-serif font-bold">Experience Space</h2>
-            <p className="text-xs font-serif italic text-red-100 mt-0.5">
+            <h2 className="text-xl font-serif font-bold tracking-tight">Experience Space</h2>
+            <p className="text-xs font-serif italic text-red-100/90 mt-0.5">
               Leben / Wertvolle Momente bewahren | Preserving precious moments
             </p>
           </div>
